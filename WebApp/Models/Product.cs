@@ -11,6 +11,7 @@ namespace WebApp.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
+        public string? ShortDescription { get; set; }
         public string Description { get; set; }
         [Range(0, int.MaxValue)]
         public double Price { get; set; }

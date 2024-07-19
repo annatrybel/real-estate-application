@@ -30,7 +30,7 @@
                     {
                         <tr>
                             <td width="50%">@obj.Name</td>
-                            <td width="30%">$ @obj.Price</td>
+                            <td width="30%">@obj.Price.ToString("C")</td>
                             <td width="50%">@Html.Raw(obj.Description)</td>
                             <td> <img src="/Images/product/@obj.Image" width="50%" /></td>
                             <td width="50%">@obj.CategoryId</td>                            
