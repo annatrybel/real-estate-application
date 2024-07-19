@@ -98,6 +98,7 @@ namespace WebApp.Controllers
             {
                 string webRootPath = _webHostEnvironment.ContentRootPath;
                 var files = HttpContext.Request.Form.Files;
+
                 if (files.Count > 0)
                 {
                     string fileName = Guid.NewGuid().ToString();
@@ -190,19 +191,34 @@ namespace WebApp.Controllers
         }
 
         // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var product = await _context.Product.FindAsync(id);
-            if (product != null)
+
+            if (product == null)
             {
-                _context.Product.Remove(product);
+                return NotFound();
             }
 
+            // Ścieżka do katalogu, gdzie przechowywane są obrazy
+            string webRootPath = _webHostEnvironment.ContentRootPath;
+            var imagePath = Path.Combine(webRootPath, "wwwroot\\images\\product", product.Image);
+
+            // Usunięcie pliku obrazu, jeśli istnieje
+            if (!string.IsNullOrEmpty(product.Image) && System.IO.File.Exists(imagePath))
+            {
+                System.IO.File.Delete(imagePath);
+            }
+
+            // Usunięcie produktu z bazy danych
+            _context.Product.Remove(product);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool ProductExists(int id)
         {
