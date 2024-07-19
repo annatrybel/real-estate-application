@@ -16,11 +16,13 @@ namespace WebApp.Controllers
     {
         private readonly WebAppContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ILogger<ProductsController> _logger;
 
-        public ProductsController(WebAppContext context, IWebHostEnvironment webHostEnvironment)
+        public ProductsController(WebAppContext context, IWebHostEnvironment webHostEnvironment, ILogger<ProductsController> logger)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
         }
 
         // GET: Products 
@@ -79,6 +81,8 @@ namespace WebApp.Controllers
                 {
                     return NotFound();
                 }
+                // Logowanie danych produktu
+                _logger.LogInformation("Editing Product: {@Product}", productVM.Product);
                 return View(productVM);
             }
         }
@@ -165,41 +169,6 @@ namespace WebApp.Controllers
         }
 
 
-
-
-        // POST: Products/Edit        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,Image,CategoryId")] Product product)
-        {
-            if (id != product.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "DisplayOrder", product.CategoryId);
-            return View(product);
-        }
 
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
