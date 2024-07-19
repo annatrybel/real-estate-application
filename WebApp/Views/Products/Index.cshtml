@@ -20,6 +20,9 @@
                     <tr>
                         <th>Product Name</th>
                         <th>Price</th>
+                        <th>Description</th>
+                        <th>Image</th>
+                        <th>CategoryId</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,10 +30,13 @@
                     {
                         <tr>
                             <td width="50%">@obj.Name</td>
-                            <td width="30%">@obj.Price</td>
+                            <td width="30%">$ @obj.Price</td>
+                            <td width="50%">@Html.Raw(obj.Description)</td>
+                            <td> <img src="/Images/product/@obj.Image" width="50%" /></td>
+                            <td width="50%">@obj.CategoryId</td>                            
                             <td class="text-center">
                                 <div class="w-75 btn-group" role="group">
-                                    <a asp-route-id="@obj.Id" asp-action=" Upsert" class="btn btn-primary mx-2">
+                                    <a asp-controller="Products" asp-route-id="@obj.Id" asp-action=" Upsert" class="btn btn-primary mx-2">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
                                     <a asp-route-id="@obj.Id" asp-action="Delete" class="btn btn-danger">
@@ -48,5 +54,4 @@
             <p>No product found</p>
         }
     </div>
-
 

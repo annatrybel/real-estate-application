@@ -17,5 +17,7 @@ namespace WebApp.Data
         public DbSet<WebApp.Models.Category> Category { get; set; } = default!;
         public DbSet<WebApp.Models.ApplicationType> ApplicationType { get; set; } = default!;
         public DbSet<WebApp.Models.Product> Product { get; set; } = default!;
+        public DbSet<WebApp.Models.ArticleModel> Articles { get; set; } = default!;
+        public DbSet<WebApp.Models.ImageModel> Images { get; set; } = default!;
     }
 }

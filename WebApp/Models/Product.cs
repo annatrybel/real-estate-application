@@ -14,11 +14,11 @@ namespace WebApp.Models
         public string Description { get; set; }
         [Range(0, int.MaxValue)]
         public double Price { get; set; }
-        public string Image { get; set; }
+        public string? Image { get; set; }
 
         [Display(Name = "Category Type")]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         [ForeignKey("CategoryId")]
-        public virtual Category Category { get; set; }
+        public virtual Category? Category { get; set; }
     }
 }

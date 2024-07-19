@@ -7,6 +7,8 @@ using WebApp.Models.ViewModels;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using System.Collections.Generic;
 
 namespace WebApp.Controllers
 {
@@ -90,17 +92,24 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                string webRootPath = _webHostEnvironment.WebRootPath;
+                string webRootPath = _webHostEnvironment.ContentRootPath;
                 var files = HttpContext.Request.Form.Files;
                 if (files.Count > 0)
                 {
                     string fileName = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(webRootPath, WC.ImagePath.TrimStart('\\'));
+                    var uploads = Path.Combine(webRootPath, "wwwroot\\images\\product");
                     var extension = Path.GetExtension(files[0].FileName);
+
+
+                    if(!System.IO.Directory.Exists(uploads))
+                    {
+                        System.IO.Directory.CreateDirectory(uploads);
+                    }
+
 
                     if (productVM.Product.Image != null)
                     {
-                        var imagePath = Path.Combine(webRootPath, productVM.Product.Image.TrimStart('\\'));
+                        var imagePath = Path.Combine(webRootPath, "wwwroot\\images\\product");
                         if (System.IO.File.Exists(imagePath))
                         {
                             System.IO.File.Delete(imagePath);
@@ -111,7 +120,7 @@ namespace WebApp.Controllers
                     {
                         files[0].CopyTo(fileStream);
                     }
-                    productVM.Product.Image = WC.ImagePath + fileName + extension;
+                    productVM.Product.Image = fileName + extension;
                 }
                 else
                 {
@@ -158,29 +167,7 @@ namespace WebApp.Controllers
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Products/Edit        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,Image,CategoryId")] Product product)
