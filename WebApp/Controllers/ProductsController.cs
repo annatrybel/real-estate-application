@@ -28,32 +28,18 @@ namespace WebApp.Controllers
         // GET: Products 
         public async Task<IActionResult> Index()
         {
-            var webAppContext = _context.Product.Include(p => p.Category);
-            if (webAppContext == null)
+            IEnumerable<Product> objList =  _context.Product;
+            foreach (var obj in objList)
             {
-                return NotFound();
+                obj.Category = await _context.Category.FirstOrDefaultAsync(u => u.Id == obj.CategoryId);
+                obj.ApplicationType = await _context.ApplicationType.FirstOrDefaultAsync(u => u.Id == obj.ApplicationId);
             }
-            return View(await webAppContext.ToListAsync());
+                var webAppContext = _context.Product.Include(p => p.Category);
+            
+            return View(objList);
         }
 
-        // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Product
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
+        
 
         // GET: Products/Upsert/5
         public async Task<IActionResult> Upsert(int? id)
@@ -62,6 +48,11 @@ namespace WebApp.Controllers
             {
                 Product = new Product(),
                 CategorySelectList = _context.Category.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }).ToList(),
+                ApplicationTypeSelectList= _context.ApplicationType.Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
@@ -165,6 +156,11 @@ namespace WebApp.Controllers
                 Text = i.Name,
                 Value = i.Id.ToString()
             }).ToList();
+            productVM.ApplicationTypeSelectList = _context.ApplicationType.Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+            }).ToList();
 
             return View(productVM);
         }
@@ -181,6 +177,7 @@ namespace WebApp.Controllers
 
             var product = await _context.Product
                 .Include(p => p.Category)
+                .Include(p => p.ApplicationType)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {

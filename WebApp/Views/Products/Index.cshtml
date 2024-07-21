@@ -22,7 +22,8 @@
                         <th>Price</th>
                         <th>Description</th>
                         <th>Image</th>
-                        <th>CategoryId</th>
+                        <th>Category</th>
+                        <th>Application Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,7 +34,8 @@
                             <td width="30%">@obj.Price.ToString("C")</td>
                             <td width="50%">@Html.Raw(obj.Description)</td>
                             <td> <img src="/Images/product/@obj.Image" width="50%" /></td>
-                            <td width="50%">@obj.CategoryId</td>                            
+                            <td width="50%">@obj.Category.Name</td>
+                            <td width="50%">@obj.ApplicationType.Name</td>
                             <td class="text-center">
                                 <div class="w-75 btn-group" role="group">
                                     <a asp-controller="Products" asp-route-id="@obj.Id" asp-action="Upsert" class="btn btn-primary mx-2">
