@@ -1,16 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<WebAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("WebAppContext") ?? throw new InvalidOperationException("Connection string 'WebAppContext' not found.")));
 
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+               .AddEntityFrameworkStores<WebAppContext>();
 
 builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddSession(options =>
 {
     
@@ -36,12 +38,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseSession();
+
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
