@@ -1,27 +1,38 @@
 ﻿@using Microsoft.AspNetCore.Identity
-
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using WebApp.Models
+@using WebApp.Utility
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Witaj, @User.Identity.Name!</a>
-        </li>
-        <li class="nav-item">
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">User Profile</a>
+            <a class="dropdown-item" asp-controller="Bookmarked" asp-action="Index">
+                @{
+                    var count = HttpContextAccessor.HttpContext.Session.Get<List<Bookmarked>>(WC.Session)?.Count ?? 0;
+                }
+                Bookmarked (@count)
+            </a>
+            <div class="dropdown-divider"></div>
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post">
-                <button type="submit" class="nav-link btn btn-link text-dark" style="width:auto; padding:0;">Wyloguj</button>
+                <button type="submit" class="dropdown-item">Log out</button>
             </form>
-        </li>
-    }
-    else
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Rejestracja</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Logowanie</a>
-        </li>
-    }
-</ul>
+        </div>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Sign up</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Sign in</a>
+    </li>
+}

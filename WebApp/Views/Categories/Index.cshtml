@@ -1,52 +1,102 @@
-﻿@model IEnumerable<WebApp.Models.Category>
-
+﻿@model Tuple<IEnumerable<WebApp.Models.Category>, IEnumerable<WebApp.Models.ListingsType>>
 
 <div class="container p-3">
     <div class="row pt-4">
-        <div class=" col-6">
-            <h2 class=" text-primary">Categories</h2>
-        </div>
         <div class="col-6">
-            <a asp-controller="Categories" asp-action="Create" class="btn btn-primary float-right">
-                <i class="fa-solid fa-plus"></i> &nbsp; Create New Category
+            <h2 class="text-primary">Property Category</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Categories" asp-action="Create" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i> &nbsp; Create New Property Category
             </a>
         </div>
-
-        <br /><br />
-
-        @if (Model.Count() > 0)
-        {
-            <table class="table table-bordered table-striped" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Category Name</th>
-                        <th>Display Order</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var obj in Model)
-                    {
-                        <tr>
-                            <td width="50%">@obj.Name</td>
-                            <td width="30%">@obj.DisplayOrder</td>
-                            <td class="text-center">
-                                <div class="w-75 btn-group" role="group">
-                                    <a asp-controller="Categories" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary mx-2">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </a>
-                                    <a asp-controller="Categories" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash-alt"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <p>No categories found</p>
-        }
     </div>
 
+    <br /><br />
+
+    @if (Model.Item1.Any())
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Property Category Name</th>
+                    <th>Display Order</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in Model.Item1)
+                {
+                    <tr>
+                        <td width="50%">@category.Name</td>
+                        <td width="30%">@category.DisplayOrder</td>
+                        <td class="text-center">
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-primary mx-2">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No categories found</p>
+    }
+
+    <br /><br />
+
+    <!-- Listings Type Section -->
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Listings Type list</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="ListingsType" asp-action="Create" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i> &nbsp; Create New Listings Type
+            </a>
+        </div>
+    </div>
+
+    <br /><br />
+
+    @if (Model.Item2.Any())
+    {
+        <table class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Listings Type Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var listingsType in Model.Item2)
+                {
+                    <tr>
+                        <td width="50%">@listingsType.Name</td>
+                        <td class="text-center">
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="ListingsType" asp-action="Edit" asp-route-id="@listingsType.Id" class="btn btn-primary mx-2">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a asp-controller="ListingsType" asp-action="Delete" asp-route-id="@listingsType.Id" class="btn btn-danger">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No listings types found</p>
+    }
+</div>

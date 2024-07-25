@@ -238,7 +238,7 @@ namespace WebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApplicationType");
+                    b.ToTable("ApplicationType", (string)null);
                 });
 
             modelBuilder.Entity("WebApp.Models.Category", b =>
@@ -259,7 +259,7 @@ namespace WebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
                 });
 
             modelBuilder.Entity("WebApp.Models.Product", b =>
@@ -299,7 +299,7 @@ namespace WebApp.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Product", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -3,11 +3,11 @@
 <div class="container p-3">
     <div class="row pt-4">
         <div class=" col-6">
-            <h2 class=" text-primary">Product list</h2>
+            <h2 class=" text-primary">Offers</h2>
         </div>
-        <div class="col-6 text-right">
-            <a asp-action="Upsert" class="btn btn-primary float-right">
-                <i class="fa-solid fa-plus"></i> &nbsp; Create New Product
+        <div class="col-6 text-end">
+            <a asp-controller="Products" asp-action ="Upsert" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i> &nbsp; Create New Offer
             </a>
         </div>
 
@@ -18,7 +18,7 @@
             <table class="table table-bordered table-striped" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Product Name</th>
+                        <th>Offer Name</th>
                         <th>Price</th>
                         <th>Description</th>
                         <th>Image</th>
@@ -35,7 +35,7 @@
                             <td width="50%">@Html.Raw(obj.Description)</td>
                             <td> <img src="/Images/product/@obj.Image" width="50%" /></td>
                             <td width="50%">@obj.Category.Name</td>
-                            <td width="50%">@obj.ApplicationType.Name</td>
+                            <td width="50%">@obj.ListingsType.Name</td>
                             <td class="text-center">
                                 <div class="w-75 btn-group" role="group">
                                     <a asp-controller="Products" asp-route-id="@obj.Id" asp-action="Upsert" class="btn btn-primary mx-2">

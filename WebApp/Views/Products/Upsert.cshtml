@@ -96,13 +96,13 @@
 
                 <div class="form-group row mb-3">
                     <div class="col-4">
-                        <label asp-for="Product.ApplicationId"></label>
+                        <label asp-for="Product.ListingsTypeId"></label>
                     </div>
                     <div class="col-8">
-                        <select asp-for="Product.ApplicationId" asp-items="@Model.ApplicationTypeSelectList " class="form-control">
+                        <select asp-for="Product.ListingsTypeId" asp-items="@Model.ListingsTypeSelectList " class="form-control">
                             <option disabled selected>--Choose...-- </option>
                         </select>
-                        <span asp-validation-for="Product.ApplicationId" class="text-danger"></span>
+                        <span asp-validation-for="Product.ListingsTypeId" class="text-danger"></span>
                     </div>
                 </div>
 

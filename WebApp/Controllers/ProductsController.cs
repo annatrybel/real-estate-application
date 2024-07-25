@@ -32,7 +32,7 @@ namespace WebApp.Controllers
             foreach (var obj in objList)
             {
                 obj.Category = await _context.Category.FirstOrDefaultAsync(u => u.Id == obj.CategoryId);
-                obj.ApplicationType = await _context.ApplicationType.FirstOrDefaultAsync(u => u.Id == obj.ApplicationId);
+                obj.ListingsType = await _context.ListingsType.FirstOrDefaultAsync(u => u.Id == obj.ListingsTypeId);
             }
                 var webAppContext = _context.Product.Include(p => p.Category);
             
@@ -52,7 +52,7 @@ namespace WebApp.Controllers
                     Text = i.Name,
                     Value = i.Id.ToString()
                 }).ToList(),
-                ApplicationTypeSelectList= _context.ApplicationType.Select(i => new SelectListItem
+                ListingsTypeSelectList = _context.ListingsType.Select(i => new SelectListItem
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
@@ -156,7 +156,7 @@ namespace WebApp.Controllers
                 Text = i.Name,
                 Value = i.Id.ToString()
             }).ToList();
-            productVM.ApplicationTypeSelectList = _context.ApplicationType.Select(i => new SelectListItem
+            productVM.ListingsTypeSelectList = _context.ListingsType.Select(i => new SelectListItem
             {
                 Text = i.Name,
                 Value = i.Id.ToString()
@@ -177,7 +177,7 @@ namespace WebApp.Controllers
 
             var product = await _context.Product
                 .Include(p => p.Category)
-                .Include(p => p.ApplicationType)
+                .Include(p => p.ListingsType)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {

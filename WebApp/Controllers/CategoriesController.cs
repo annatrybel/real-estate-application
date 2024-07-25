@@ -22,7 +22,12 @@ namespace WebApp.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Category.ToListAsync());
+            var categories = await _context.Category.ToListAsync();
+            var listingsTypes = await _context.ListingsType.ToListAsync();
+
+            var model = new Tuple<IEnumerable<Category>, IEnumerable<WebApp.Models.ListingsType>>(categories, listingsTypes);
+
+            return View(model);
         }
 
         // GET: Categories/Details/5

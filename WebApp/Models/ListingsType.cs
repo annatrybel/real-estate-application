@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models
 {
-    public class ApplicationType
+    public class ListingsType
     {
         [Key]
         public int Id { get; set; }

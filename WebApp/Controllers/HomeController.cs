@@ -25,9 +25,9 @@ namespace WebApp.Controllers
         {
             HomeVM homeVM = new HomeVM()
             {
-                Products = _context.Product.Include(p => p.Category).Include(p => p.ApplicationType),
+                Products = _context.Product.Include(p => p.Category).Include(p => p.ListingsType),
                 Categories = _context.Category,
-                ApplicationTypes = _context.ApplicationType
+                ListingsType = _context.ListingsType
             };
             return View(homeVM);
         }
@@ -43,7 +43,7 @@ namespace WebApp.Controllers
 
             DetailsVM detailsVM = new DetailsVM()
             {
-                Product = _context.Product.Include(p => p.Category).Include(p => p.ApplicationType).Where(p => p.Id == id).FirstOrDefault(),
+                Product = _context.Product.Include(p => p.Category).Include(p => p.ListingsType).Where(p => p.Id == id).FirstOrDefault(),
                 ExistsInBookmarks = false
             };
 

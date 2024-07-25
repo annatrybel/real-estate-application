@@ -10,11 +10,11 @@ using WebApp.Models;
 
 namespace WebApp.Controllers
 {
-    public class ApplicationTypesController : Controller
+    public class ListingsType : Controller
     {
         private readonly WebAppContext _context;
 
-        public ApplicationTypesController(WebAppContext context)
+        public ListingsType(WebAppContext context)
         {
             _context = context;
         }
@@ -22,7 +22,7 @@ namespace WebApp.Controllers
         // GET: ApplicationTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ApplicationType.ToListAsync());
+            return View(await _context.ListingsType.ToListAsync());
         }
 
         // GET: ApplicationTypes/Details/5
@@ -33,7 +33,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var applicationType = await _context.ApplicationType
+            var applicationType = await _context.ListingsType
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (applicationType == null)
             {
@@ -54,7 +54,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] ApplicationType applicationType)
+        public async Task<IActionResult> Create([Bind("Id,Name")] WebApp.Models.ListingsType applicationType)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +73,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var applicationType = await _context.ApplicationType.FindAsync(id);
+            var applicationType = await _context.ListingsType.FindAsync(id);
             if (applicationType == null)
             {
                 return NotFound();
@@ -86,7 +86,7 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] ApplicationType applicationType)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] WebApp.Models.ListingsType applicationType)
         {
             if (id != applicationType.Id)
             {
@@ -111,7 +111,7 @@ namespace WebApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Categories");
             }
             return View(applicationType);
         }
@@ -124,7 +124,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var applicationType = await _context.ApplicationType
+            var applicationType = await _context.ListingsType
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (applicationType == null)
             {
@@ -134,24 +134,24 @@ namespace WebApp.Controllers
             return View(applicationType);
         }
 
-        // POST: ApplicationTypes/Delete/5
+        // POST: ListingsType/Delete/5
         [HttpPost, ActionName("DeletePost")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePost(int id)
         {
-            var applicationType = await _context.ApplicationType.FindAsync(id);
+            var applicationType = await _context.ListingsType.FindAsync(id);
             if (applicationType == null)
             {
                 return NotFound();
             }
-            _context.ApplicationType.Remove(applicationType);
+            _context.ListingsType.Remove(applicationType);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Categories");
         }
 
         private bool ApplicationTypeExists(int id)
         {
-            return _context.ApplicationType.Any(e => e.Id == id);
+            return _context.ListingsType.Any(e => e.Id == id);
         }
     }
 }

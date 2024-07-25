@@ -23,8 +23,8 @@ namespace WebApp.Models
         public virtual Category? Category { get; set; }
 
         [Display(Name = "Application Type")]
-        public int? ApplicationId { get; set; }
-        [ForeignKey("ApplicationId")]
-        public virtual ApplicationType? ApplicationType { get; set; }
+        public int? ListingsTypeId { get; set; }
+        [ForeignKey("ListingsTypeId")]
+        public virtual ListingsType? ListingsType { get; set; }
     }
 }
