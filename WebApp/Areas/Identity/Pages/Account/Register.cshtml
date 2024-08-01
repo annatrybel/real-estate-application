@@ -1,15 +1,18 @@
 ﻿@page
 @model WebApp.Areas.Identity.Pages.Account.RegisterModel
-@{
-    ViewData["Title"] = "Register";
-}
 
 <!-- Dodaj element tła -->
 <div class="background-register"></div>
 
 <div class="container-register">
-    <h1 class="text-center mb-4 ">@ViewData["Title"]</h1>
-
+    @if(User.IsInRole(WebApp.WC.AdminRole))
+    {
+        <h1 class="text-center mb-4 ">Register an Admin Account</h1>
+    }
+    else
+    {
+        <h1 class="text-center mb-4 ">Register</h1>
+    }
     <div class="row">
         <div class="col-md-4">
             <div class="card card-register">
@@ -33,7 +36,15 @@
                             <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                             <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                         </div>
-                        <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                        @if (User.IsInRole(WebApp.WC.AdminRole))
+                        {
+                            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-warning">Register Admin User</button>
+                        }
+                        else
+                        {
+                            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                        }
+
                     </form>
                 </div>
             </div>

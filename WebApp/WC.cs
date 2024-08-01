@@ -2,7 +2,10 @@
 {
     public static class WC
     {
-        public static string ImagePath = @"/Images/product/";
-        public static string Session = "Session";
+        public const string ImagePath = @"/Images/product/";
+        public const string Session = "Session";
+
+        public const string AdminRole = "Admin";
+        public const string CustomerRole = "Customer";
     }
 }

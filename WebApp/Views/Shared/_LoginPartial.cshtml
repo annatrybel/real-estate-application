@@ -14,12 +14,13 @@
         </a>
         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
             <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">User Profile</a>
-            <a class="dropdown-item" asp-controller="Bookmarked" asp-action="Index">
+            <a class="dropdown-item" asp-controller="Bookmark" asp-action="Index">
                 @{
                     var count = HttpContextAccessor.HttpContext.Session.Get<List<Bookmarked>>(WC.Session)?.Count ?? 0;
                 }
                 Bookmarked (@count)
             </a>
+            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create Admin User</a>
             <div class="dropdown-divider"></div>
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post">
                 <button type="submit" class="dropdown-item">Log out</button>
