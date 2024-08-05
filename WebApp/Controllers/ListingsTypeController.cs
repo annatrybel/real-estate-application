@@ -12,11 +12,11 @@ using WebApp.Models;
 namespace WebApp.Controllers
 {
     [Authorize(Roles = WC.AdminRole)]
-    public class ListingsType : Controller
+    public class ListingsTypeController : Controller
     {
         private readonly WebAppContext _context;
 
-        public ListingsType(WebAppContext context)
+        public ListingsTypeController(WebAppContext context)
         {
             _context = context;
         }

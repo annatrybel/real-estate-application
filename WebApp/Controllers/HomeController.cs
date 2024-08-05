@@ -12,12 +12,10 @@ namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly WebAppContext _context;
 
-        public HomeController(ILogger<HomeController> logger, WebAppContext context)
+        public HomeController(WebAppContext context)
         {
-            _logger = logger;
             _context = context;
         }
 

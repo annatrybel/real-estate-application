@@ -74,7 +74,6 @@ namespace WebApp.Controllers
                 {
                     return NotFound();
                 }
-                // Logowanie danych produktu
                 _logger.LogInformation("Editing Product: {@Product}", productVM.Product);
                 return View(productVM);
             }
@@ -205,13 +204,11 @@ namespace WebApp.Controllers
             string webRootPath = _webHostEnvironment.ContentRootPath;
             var imagePath = Path.Combine(webRootPath, "wwwroot\\images\\product", product.Image);
 
-            // Usunięcie pliku obrazu, jeśli istnieje
             if (!string.IsNullOrEmpty(product.Image) && System.IO.File.Exists(imagePath))
             {
                 System.IO.File.Delete(imagePath);
             }
 
-            // Usunięcie produktu z bazy danych
             _context.Product.Remove(product);
             await _context.SaveChangesAsync();
 

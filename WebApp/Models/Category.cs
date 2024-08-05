@@ -12,7 +12,7 @@ namespace WebApp.Models
         [Display(Name = "Display Order")]
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Display Order for category must be greater than 0")]
-        public string DisplayOrder { get; set; }
+        public int DisplayOrder { get; set; }
     }
 
 }
