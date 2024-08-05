@@ -23,7 +23,7 @@ body {
     }
 }
 
-/* Ustawienia t³a */
+
 .background {
     position: fixed;
     top: 0;
@@ -36,12 +36,10 @@ body {
     z-index: -1;
 }
 
-/* Style dla kontenera */
 .container {
     flex: 1;
 }
 
-/* Stopka */
 .site-footer {
     background-color: #f8f9fa; /* Kolor t³a stopki */
     padding: 1rem 0; /* Padding wokó³ treœci stopki */

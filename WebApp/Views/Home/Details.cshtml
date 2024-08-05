@@ -1,11 +1,11 @@
 ﻿@model WebApp.Models.ViewModels.DetailsVM
 
-<div class="">
-    <form method="post">
-        <input asp-for="@Model.Product.Id" hidden/>
-        <div class="container backgroundWhite pt-4">
+<div class="containerInDetails">
+    <!-- Sekcja produktu -->
+    <div class="product-section">
+        <div class="backgroundWhite pt-4">
             <div class="card" style="border:1px solid #000000;">
-                <div class="card-header bg-dark text-light m-lg-0 d-flex justify-content-between align-items-center" style="border-radius: 0px;">
+                <div class="card-header bg-dark text-light d-flex justify-content-between align-items-center" style="border-radius: 0px;">
                     <div>
                         <h1 class="text-white">@Model.Product.Name</h1>
                     </div>
@@ -15,19 +15,17 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="container rounded p-2">
+                    <div class="rounded p-2">
                         <div class="row">
                             <div class="col-12 col-lg-4 p-1 text-center">
                                 <img src="~/images/product/@Model.Product.Image" width="100%" class="rounded" alt="Product image" />
                             </div>
                             <div class="col-12 col-lg-8">
-                                <div class="row pl-3">
-                                    <div class="col-12">
-                                        <span class="badge p-3 border" style="background-color:lavenderblush; color:black;">@Model.Product.Category.Name</span>
-                                        <span class="badge p-3 border" style="background-color:azure; color:black;">@Model.Product.ListingsType.Name</span>
-                                        <h3 class="text-success"></h3>
-                                        <p class="text-secondary">@Html.Raw(Model.Product.Description)</p>
-                                    </div>
+                                <div class="pl-3">
+                                    <span class="badge p-3 border" style="background-color:lavenderblush; color:black;">@Model.Product.Category.Name</span>
+                                    <span class="badge p-3 border" style="background-color:azure; color:black;">@Model.Product.ListingsType.Name</span>
+                                    <h3 class="text-success"></h3>
+                                    <p class="text-secondary">@Html.Raw(Model.Product.Description)</p>
                                 </div>
                             </div>
                         </div>
@@ -45,12 +43,89 @@
                             }
                             else
                             {
-                                <button type="submit" asp-route-id="@Model.Product.Id"  class="btn btn-info form-control btn-lg" style="height:50px;">Add to Bookmarked</button>
+                                <button type="submit" asp-route-id="@Model.Product.Id" class="btn btn-info form-control btn-lg" style="height:50px;">Add to Bookmarked</button>
                             }
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+
+    <!-- Sekcja formularza -->
+    <div class="form-section">
+        <div class="backgroundWhite pt-4">
+            <div class="card" style="border:1px solid #000000;">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24" class="me-2">
+                            <path fill="currentColor" fill-rule="evenodd" d="M18.388 19.978C10.62 19.634 4.365 13.38 4.022 5.612l3.515-1.406 2.149 4.299-1.664.832v.62a6.029 6.029 0 0 0 6.021 6.021h.62l.833-1.663 4.298 2.148-1.406 3.515Zm3.13-4.897-6.022-3.011-1.347.45-.704 1.407a4.023 4.023 0 0 1-3.372-3.372l1.408-.704.449-1.346-3.01-6.022L7.65 2 2.63 4.007 2 4.94C2 14.347 9.654 22 19.061 22l.932-.63L22 16.35l-.483-1.27Z" clip-rule="evenodd"></path>
+                        </svg>
+                        <button data-cy="" class="btn btn-secondary" type="button">
+                            <span>Pokaż numer</span>
+                        </button>
+                    </div>
+
+                    <form method="post">
+                        <input asp-for="@Model.Product.Id" hidden />
+                        <div class="form-group">
+                            <label for="name">Imię</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Imię*" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Email*" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Numer telefonu</label>
+                            <input type="text" id="phone" name="phone" class="form-control" placeholder="Numer telefonu" />
+                        </div>
+                            
+                        <div class="form-group">
+                            <label for="message">Wiadomość</label>
+                            <textarea id="message" name="message" class="form-control" rows="6" placeholder="Wpisz swoją wiadomość..."></textarea>
+                        </div>
+
+                        <button type="submit" class="sms btn btn-primary">Wyślij wiadomość</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .containerInDetails {
+        display: grid;
+        grid-template-columns: 3fr 1fr; /* Ustawia układ na 3 kolumny dla produktu i 1 kolumnę dla formularza */
+        gap: 20px; /* Odstęp między kolumnami */
+        margin: 0;
+    }
+
+    .product-section, .form-section {
+        background-color: #fff; /* Tło dla sekcji */
+    }
+
+    .backgroundWhite {
+        background-color: #fff; /* Białe tło dla kontenerów */
+    }
+
+    .card {
+        border: 1px solid #000000;
+        border-radius: 0;
+    }
+
+    .form-group label {
+        margin-top: 10px;
+        margin-bottom: 5px; 
+        display: block; 
+    }
+
+    .sms {
+        margin-top: 10px;
+    }
+
+   
+</style>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp.Data;
 
@@ -11,9 +12,11 @@ using WebApp.Data;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(WebAppContext))]
-    partial class WebAppContextModelSnapshot : ModelSnapshot
+    [Migration("20240805171146_UpdateProductModel")]
+    partial class UpdateProductModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -266,12 +269,14 @@ namespace WebApp.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateAdded")
@@ -297,7 +302,7 @@ namespace WebApp.Migrations
                     b.Property<string>("ShortDescription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SquareMeters")
+                    b.Property<int>("SquareMeters")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

@@ -2,18 +2,18 @@
 
 <div class="container p-3">
     <div class="row pt-4">
-        <div class=" col-6">
-            <h2 class=" text-primary">Offers</h2>
+        <div class="col-6">
+            <h2 class="text-primary">Offers</h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="Products" asp-action ="Upsert" class="btn btn-primary">
+            <a asp-controller="Products" asp-action="Upsert" class="btn btn-primary">
                 <i class="fa-solid fa-plus"></i> &nbsp; Create New Offer
             </a>
         </div>
 
         <br /><br />
 
-        @if (Model.Count() > 0)
+        @if (Model.Any())
         {
             <table class="table table-bordered table-striped" style="width:100%">
                 <thead>
@@ -30,15 +30,17 @@
                     @foreach (var obj in Model)
                     {
                         <tr>
-                            <td width="50%">@obj.Name</td>
-                            <td width="30%">@obj.Price.ToString("C")</td>
-                            <td width="50%">@Html.Raw(obj.Description)</td>
-                            <td> <img src="/Images/product/@obj.Image" width="50%" /></td>
-                            <td width="50%">@obj.Category.Name</td>
-                            <td width="50%">@obj.ListingsType.Name</td>
+                            <td width="25%">@obj.Name</td>
+                            <td width="15%">@obj.Price.ToString("C")</td>
+                            <td width="30%">@Html.Raw(obj.ShortDescription)</td>
+                            <td width="20%">
+                                <img src="/Images/product/@obj.Image" style="width: 100%; max-height: 100px; object-fit: cover;" />
+                            </td>
+                            <td width="20%">@obj.Category.Name</td>
+                            <td width="20%">@obj.ListingsType.Name</td>
                             <td class="text-center">
-                                <div class="w-75 btn-group" role="group">
-                                    <a asp-controller="Products" asp-route-id="@obj.Id" asp-action="Upsert" class="btn btn-primary mx-2">
+                                <div class="d-flex justify-content-center" style="gap: 5px;">
+                                    <a asp-controller="Products" asp-route-id="@obj.Id" asp-action="Upsert" class="btn btn-primary">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
                                     <a asp-route-id="@obj.Id" asp-action="Delete" class="btn btn-danger">
@@ -46,6 +48,7 @@
                                     </a>
                                 </div>
                             </td>
+
                         </tr>
                     }
                 </tbody>
@@ -56,4 +59,18 @@
             <p>No product found</p>
         }
     </div>
+</div>
 
+
+<style>
+    .btn-group-custom {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .btn-custom {
+        width: 80px; 
+    }
+
+</style>                                   
