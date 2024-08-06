@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using WebApp.Extensions;
 
 namespace WebApp.Controllers
 {
@@ -58,7 +59,21 @@ namespace WebApp.Controllers
                 {
                     Text = i.Name,
                     Value = i.Id.ToString()
-                }).ToList()
+                }).ToList(),
+                MarketSelectList = Enum.GetValues(typeof(Product.MarketType))
+                    .Cast<Product.MarketType>()
+                    .Select(e => new SelectListItem
+                    {
+                        Text = e.GetDisplayName(), 
+                        Value = e.ToString()
+                    }).ToList(),
+                BuildingTypeSelectList = Enum.GetValues(typeof(Product.BuildingType))
+                    .Cast<Product.BuildingType>()
+                    .Select(e => new SelectListItem
+                    {
+                        Text = e.GetDisplayName(), 
+                        Value = e.ToString()
+                    }).ToList()
             };
 
             if (id == null)
@@ -74,6 +89,8 @@ namespace WebApp.Controllers
                 {
                     return NotFound();
                 }
+
+
                 _logger.LogInformation("Editing Product: {@Product}", productVM.Product);
                 return View(productVM);
             }
@@ -162,9 +179,24 @@ namespace WebApp.Controllers
                 Text = i.Name,
                 Value = i.Id.ToString()
             }).ToList();
+            productVM.MarketSelectList = Enum.GetValues(typeof(Product.MarketType))
+                    .Cast<Product.MarketType>()
+                    .Select(e => new SelectListItem
+                    {
+                        Text = e.GetDisplayName(),
+                        Value = e.ToString()
+                    }).ToList();
+            productVM.BuildingTypeSelectList = Enum.GetValues(typeof(Product.BuildingType))
+                    .Cast<Product.BuildingType>()
+                    .Select(e => new SelectListItem
+                    {
+                        Text = e.GetDisplayName(),
+                        Value = e.ToString()
+                    }).ToList();
 
             return View(productVM);
         }
+
 
 
 
@@ -180,6 +212,27 @@ namespace WebApp.Controllers
                 .Include(p => p.Category)
                 .Include(p => p.ListingsType)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            var productVM = new ProductVM
+            {
+                Product = product,
+                MarketSelectList = Enum.GetValues(typeof(Product.MarketType))
+                .Cast<Product.MarketType>()
+                .Select(e => new SelectListItem
+                {
+                    Text = e.ToString(),
+                    Value = e.ToString(),
+                    Selected = e == product.Market // Ustawienie zaznaczenia
+                }).ToList(),
+                BuildingTypeSelectList = Enum.GetValues(typeof(Product.BuildingType))
+                .Cast<Product.BuildingType>()
+                .Select(e => new SelectListItem
+                {
+                    Text = e.ToString(),
+                    Value = e.ToString(),
+                    Selected = e == product.Building // Ustawienie zaznaczenia
+                }).ToList()
+            };
             if (product == null)
             {
                 return NotFound();

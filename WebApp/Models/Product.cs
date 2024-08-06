@@ -26,16 +26,38 @@ namespace WebApp.Models
         public int? ListingsTypeId { get; set; }
         [ForeignKey("ListingsTypeId")]
         public virtual ListingsType? ListingsType { get; set; }
-
-        public string? Address { get; set; } 
         public string? City { get; set; }
         public int? SquareMeters { get; set; }
+        public MarketType Market { get; set; } 
+
+        public BuildingType Building { get; set; }
         public DateTime DateAdded { get; set; }
 
 
         public Product()
         {
             DateAdded = DateTime.Now;
+        }
+
+        public enum MarketType
+        {
+            [Display(Name = "Primary Market")]
+            PrimaryMarket,
+
+            [Display(Name = "Secondary Market")]
+            SecondaryMarket
+        }
+
+        public enum BuildingType
+        {
+            [Display(Name = "Apartment Block")]
+            ApartmentBlock,
+
+            [Display(Name = "Tenement House")]
+            TenementHouse,
+
+            [Display(Name = "Townhouse")]
+            Townhouse
         }
     }
 }

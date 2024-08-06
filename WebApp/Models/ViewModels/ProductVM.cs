@@ -8,5 +8,7 @@ namespace WebApp.Models.ViewModels
         public Product Product { get; set; }
         public IEnumerable<SelectListItem>? CategorySelectList { get; set; }
         public IEnumerable<SelectListItem>? ListingsTypeSelectList { get; set; }
+        public IEnumerable<SelectListItem>? MarketSelectList { get; set; }
+        public IEnumerable<SelectListItem>? BuildingTypeSelectList { get; set; }
     }
 }

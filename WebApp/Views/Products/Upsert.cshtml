@@ -52,16 +52,6 @@
 
                 <div class="form-group row mt-3">
                     <div class="col-4">
-                        <label asp-for="Product.Address"></label>
-                    </div>
-                    <div class="col-8">
-                        <input asp-for="Product.Address" class="form-control" />
-                        <span asp-validation-for="Product.Address" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="form-group row mt-3">
-                    <div class="col-4">
                         <label asp-for="Product.City"></label>
                     </div>
                     <div class="col-8">
@@ -97,6 +87,30 @@
                     <div class="col-8">
                         <textarea asp-for="Product.Description" class="form-control summernote"></textarea>
                         <span asp-validation-for="Product.Description" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <div class="col-4">
+                        <label asp-for="Product.Market"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="Product.Market" asp-items="@Model.MarketSelectList" class="form-control">
+                            <option disabled selected>--Choose Market--</option>
+                        </select>
+                        <span asp-validation-for="Product.Market" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-3">
+                    <div class="col-4">
+                        <label asp-for="Product.Building"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="Product.Building" asp-items="@Model.BuildingTypeSelectList" class="form-control">
+                            <option disabled selected>--Choose Building Type--</option>
+                        </select>
+                        <span asp-validation-for="Product.Building" class="text-danger"></span>
                     </div>
                 </div>
 
