@@ -74,8 +74,6 @@ namespace WebApp.Controllers
         }
 
 
-
-
       
         public IActionResult RemoveFromBookmarked(int id)
         {

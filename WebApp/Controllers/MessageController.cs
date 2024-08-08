@@ -18,25 +18,27 @@ namespace WebApp.Controllers
 
         public IActionResult Index()
         {
-            var messages = _context.Message.ToList();
+            var messages = _context.Message.Where(m => !m.IsArchived).ToList();
             return View(messages);
         }
 
 
-       
+
         public IActionResult CreateMessage([Bind("Name,Email,Phone,Messages")] WebApp.Models.Message message)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(message);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
-            return View(Index);
+            return RedirectToAction("Index", "Home");
         }
 
+       
+
         [HttpPost]
-        public IActionResult DeleteMessage(int id)
+        public IActionResult DeleteMessageFromArchive(int id)
         {
             var message = _context.Message.Find(id);
             if (message != null)
@@ -45,7 +47,43 @@ namespace WebApp.Controllers
                 _context.SaveChanges();
             }
 
+            return RedirectToAction("Archive");
+        }
+
+        [HttpPost]
+        public IActionResult DeleteSelectedMessages(int[] selectedMessages)
+        {
+            if (selectedMessages != null && selectedMessages.Length > 0)
+            {
+                var messages = _context.Message.Where(m => selectedMessages.Contains(m.Id)).ToList();
+                _context.Message.RemoveRange(messages);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index"); 
+        }
+
+
+        public IActionResult Archive()
+        {
+            var archivedMessages = _context.Message.Where(m => m.IsArchived).ToList();
+            return View(archivedMessages); 
+        }
+
+        
+        [HttpPost]
+        public IActionResult ArchiveSelectedMessages(int[] selectedMessages)
+        {
+            if (selectedMessages != null && selectedMessages.Length > 0)
+            {
+                var messages = _context.Message.Where(m => selectedMessages.Contains(m.Id)).ToList();
+                foreach (var message in messages)
+                {
+                    message.IsArchived = true;
+                }
+                _context.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
+
     }
 }

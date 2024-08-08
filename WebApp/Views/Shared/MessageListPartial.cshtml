@@ -1,0 +1,50 @@
+﻿@model IEnumerable<WebApp.Models.Message>
+
+<div class="bookmark-body">
+    <div class="d-none d-lg-block">
+        <div class="row" style="color:#821f3d; text-align: center; margin-top:10px;">
+            <div class="col-lg-1">
+                Select
+            </div>
+            <div class="col-lg-2">
+                Name
+            </div>
+            <div class="col-lg-3">
+                Email
+            </div>
+            <div class="col-lg-2">
+                Phone
+            </div>
+            <div class="col-lg-4">
+                Messages
+            </div>
+            <div class="col-lg-1">
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    @foreach (var message in Model)
+    {
+        <div class="row h-100 message-row" style="text-align: center;">
+            <div class="col-12 col-lg-1 text-center py-2">
+                <input type="checkbox" name="selectedMessages" value="@message.Id" class="select-checkbox" />
+            </div>
+            <div class="col-12 col-lg-2 text-center py-2">
+                <p>@message.Name</p>
+            </div>
+            <div class="col-12 col-lg-3 text-center py-2">
+                <h5>@message.Email</h5>
+            </div>
+            <div class="col-12 col-lg-2 text-center py-2">
+                <p>@message.Phone</p>
+            </div>
+            <div class="col-12 col-lg-4 text-center py-2">
+                <span style="font-size:17px;">@message.Messages</span>
+            </div>            
+        </div>
+    }
+
+    <hr />
+</div>

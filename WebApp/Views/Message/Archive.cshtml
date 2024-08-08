@@ -2,30 +2,27 @@
 
 @if (Model.Count() > 0)
 {
-    <form method="post" id="messageForm">
+    <form method="post" id="archiveForm">
         <br />
         <div class="backgroundWhiteBorder">
             <div class="container row">
                 <div class="col-12 d-flex justify-content-end mb-2">
-                    <button asp-action="Archive" type="submit" id="archive" class="btn btn-outline-danger">
-                        <i class="fas fa-archive"></i> Archive
-                    </button>
+                    <a asp-action="Index" asp-controller="Message" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i> Back to Messages
+                    </a>
                 </div>
                 <div class="col-12">
                     <div class="bookmark mt-4">
                         <div class="bookmark-header bg-dark text-light ml-0 container" style="background-color: #f8f9fa; padding: 5px; border-radius: 5px;">
                             <div class="col-12 d-flex justify-content-between align-items-center">
                                 <div>
-                                    <i class="fa fa-envelope"></i>
-                                    <span style="font-size: 1.5rem; font-weight: bold;">Messages</span>
+                                    <i class="fa fa-archive"></i>
+                                    <span style="font-size: 1.5rem; font-weight: bold;">Archived Messages</span>
                                 </div>
                                 <div>
                                     @foreach (var message in Model)
                                     {
-                                        <button asp-action="ArchiveSelectedMessages" asp-route-id=" @message.Id" type="submit" id="archiveSelectedButton" class="btn btn-outline-secondary d-none">
-                                            <i class="fas fa-archive"></i> Archive
-                                        </button>
-                                        <button asp-action="DeleteSelectedMessages" asp-route-id="@message.Id" type="submit" id="removeSelectedButton" class="btn btn-outline-danger d-none">
+                                        <button asp-action="DeleteMessageFromArchive" asp-route-id="@message.Id" type="submit" id="removeSelectedButton" class="btn btn-outline-danger d-none">
                                             <i class="fas fa-trash"></i> Remove
                                         </button>
                                     }
@@ -35,15 +32,6 @@
 
                         @Html.Partial("MessageListPartial", Model)
 
-                        <div class="bookmark-footer">
-                            <div class="row">
-                                <div class="col-12 col-md-3 offset-md-9">
-                                    <button asp-action="Index" asp-controller="Home" type="submit" class="btn btn-success form-control">
-                                        <span>Continue</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -70,23 +58,17 @@
             function updateButtons() {
                 var anyChecked = document.querySelectorAll('.select-checkbox:checked').length > 0;
                 if (anyChecked) {
-                    archiveButton.classList.remove('d-none');
                     removeButton.classList.remove('d-none');
                 } else {
-                    archiveButton.classList.add('d-none');
                     removeButton.classList.add('d-none');
                 }
             }
         });
     </script>
 
-    <style>
-        .message-row.selected {
-            background-color: #f0f0f0;
-        }
-    </style>
+
 }
 else
 {
-    <p>No bookmarked items</p>
+    <p>No archived messages</p>
 }

@@ -22,6 +22,6 @@ namespace WebApp.Models
         public string? Phone { get; set; }
 
         public string? Messages { get; set; }
-
+        public bool IsArchived { get; set; }
     }
 }

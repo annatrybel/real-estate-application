@@ -217,7 +217,7 @@ namespace WebApp.Controllers
                 {
                     Text = e.ToString(),
                     Value = e.ToString(),
-                    Selected = e == product.Market // Ustawienie zaznaczenia
+                    Selected = e == product.Market 
                 }).ToList(),
                 BuildingTypeSelectList = Enum.GetValues(typeof(Product.BuildingType))
                 .Cast<Product.BuildingType>()
@@ -225,7 +225,7 @@ namespace WebApp.Controllers
                 {
                     Text = e.ToString(),
                     Value = e.ToString(),
-                    Selected = e == product.Building // Ustawienie zaznaczenia
+                    Selected = e == product.Building 
                 }).ToList()
             };
             if (product == null)
