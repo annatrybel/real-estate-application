@@ -41,26 +41,26 @@ body {
 }
 
 .site-footer {
-    background-color: #f8f9fa; /* Kolor t³a stopki */
-    padding: 1rem 0; /* Padding wokó³ treœci stopki */
+    background-color: #f8f9fa; 
+    padding: 1rem 0; 
     width: 100%;
-    text-align: center; /* Wyœrodkowanie tekstu w stopce */
-    border-top: 1px solid #ddd; /* Horyzontalna linia u góry stopki */
+    text-align: center; 
+    border-top: 1px solid #ddd; 
 }
 
-    /* Style linków w stopce */
+    
     .site-footer a {
-        color: #333; /* Kolor linków */
-        text-decoration: none; /* Usuniêcie podkreœlenia z linków */
+        color: #333; 
+        text-decoration: none; 
     }
 
         .site-footer a:hover {
-            text-decoration: underline; /* Podkreœlenie linków na hover */
+            text-decoration: underline; 
         }
 
 /* Style dla karty (form) */
 .card {
-    background: rgba(255, 255, 255, 0.9); /* Slightly opaque white background for card */
+    background: rgba(255, 255, 255, 0.9); 
     border: 1px solid #ddd;
     border-radius: 8px;
 }
@@ -71,24 +71,24 @@ body {
     color: #333;
     border: 2px solid #333;
     border-radius: 4px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), /* Cieñ poni¿ej przycisku */
-    0 -1px 0 rgba(255, 255, 255, 0.4); /* Cieñ powy¿ej przycisku */
-    transition: all 0.3s ease; /* P³ynne przejœcie */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 
+    0 -1px 0 rgba(255, 255, 255, 0.4); 
+    transition: all 0.3s ease; 
 }
 
     .btn-primary:hover {
         background-color: #f8f9fa;
         color: #333;
         border: 2px solid #333;
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2), /* Wiêkszy cieñ na hover */
-        0 -2px 0 rgba(255, 255, 255, 0.6); /* Jaœniejszy cieñ powy¿ej na hover */
-        transform: translateY(-2px); /* Lekki ruch w górê na hover */
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2), 
+        0 -2px 0 rgba(255, 255, 255, 0.6); 
+        transform: translateY(-2px); 
     }
 
     .btn-primary:active {
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), /* Mniejszy cieñ przy klikniêciu */
-        0 -1px 0 rgba(255, 255, 255, 0.3); /* Jaœniejszy cieñ powy¿ej przy klikniêciu */
-        transform: translateY(1px); /* Ruch w dó³ przy klikniêciu */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 
+        0 -1px 0 rgba(255, 255, 255, 0.3); 
+        transform: translateY(1px);
     }
 
 .btn-secondary {
@@ -103,12 +103,11 @@ body {
         border: 2px solid #333;
     }
 
-/* Style dla pól formularza */
 .form-floating input::placeholder {
     color: #999;
 }
 
-/* Style focus */
+
 .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
@@ -119,42 +118,68 @@ body {
 
 
 .background-register {
-    position: fixed; /* Naprawia t³o, aby nie przewija³o siê */
+    position: fixed; 
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh; /* Pe³na wysokoœæ widoku */
+    height: 100vh; 
     background: url('https://za-gotowke.org/wp-content/uploads/2020/10/box-square.jpg') no-repeat center center;
     background-size: cover;
     z-index: -1;
 }
 
-/* Style dla kontenera */
+
 .container-register {
     position: relative;
-    padding-top: 2rem; /* Zmniejszony odstêp od góry */
-    padding-bottom: 2rem; /* Zmniejszony odstêp od do³u */
+    padding-top: 2rem; 
+    padding-bottom: 2rem; 
 }
 
-/* Style dla karty (form) */
+
 .card-register {
-    background: rgba(255, 255, 255, 0.9); /* Slightly opaque white background for card */
+    background: rgba(255, 255, 255, 0.9); 
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 2rem; /* Zmniejszony padding wewnêtrzny */
+    padding: 2rem; 
 }
 
 .row {
-    margin: 0 auto; /* Centruje formularz */
-    padding: 1; /* Usuwa dodatkowe paddingi */
+    margin: 0 auto; 
+    padding: 1; 
 }
 
 .col-md-4, .col-md-6 {
-    padding: 0; /* Usuwa paddingi wewnêtrzne kolumn */
+    padding: 0; 
 }
 
 .content-offset {
-    margin-left: 1.5rem; /* Odsuniêcie w prawo, dostosuj wed³ug potrzeb */
+    margin-left: 1.5rem; 
+}
+
+.button-NotSelect {
+    border: 2px solid black;
+    background-color: #ADD8E6;
+}
+
+.background-credit {
+    background-image: url('/Images/product/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: fixed;
+    filter: blur(2px);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.white-background {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 

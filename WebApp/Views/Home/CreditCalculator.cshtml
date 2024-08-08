@@ -1,0 +1,73 @@
+﻿@model WebApp.Models.ViewModels.CreditCalculatorVM
+
+
+<div class="background-credit"></div>
+
+<div class="container mt-5">
+    <div class="btn-group" role="group" aria-label="Page switcher">
+        <a asp-action="MortgagePayment" asp-controller="Home" asp-route-id="@Model.ProductId" class="btn btn-info button-NotSelect">Mortgage Payment</a>
+        <a style="border: 2px solid black" asp-action="CreditCalculator" asp-controller="Home" class="btn btn-info">Credit Calculator</a>
+    </div>
+
+    <h2>Credit Calculator</h2>
+    <form method="post" asp-action="CreditCalculator">
+        <div class="form-group">
+            <label for="monthlyIncome">Monthly Income</label>
+            <input type="number" id="monthlyIncome" name="MonthlyIncome" class="form-control" placeholder="Enter monthly income" required step="0.01" value="@Model.MonthlyIncome.ToString("F2")" />
+        </div>
+        <div class="form-group">
+            <label for="monthlyExpenses">Monthly Expenses</label>
+            <input type="number" id="monthlyExpenses" name="MonthlyExpenses" class="form-control" placeholder="Enter monthly expenses" required step="0.01" value="@Model.MonthlyExpenses.ToString("F2")" />
+        </div>
+        <div class="form-group">
+            <label for="loanAmount">Loan Amount</label>
+            <input type="number" id="loanAmount" name="LoanAmount" class="form-control" placeholder="Enter loan amount" step="0.01" value="@Model.LoanAmount.ToString("F2")" />
+        </div>
+        <div class="form-group">
+            <label for="interestRate">Annual Interest Rate (%)</label>
+            <input type="number" id="interestRate" name="InterestRate" class="form-control" placeholder="Enter interest rate" step="0.01" value="@Model.InterestRate.ToString("F2")" />
+        </div>
+        <div class="form-group">
+            <label for="loanTerm">Loan Term (years)</label>
+            <input type="number" id="loanTerm" name="LoanTerm" class="form-control" placeholder="Enter loan term in years" required value="@Model.LoanTerm" />
+        </div>
+        <button type="submit" class="btn btn-primary">Calculate</button>
+    </form>
+
+    @if (Model != null && Model.MonthlyPaymentLimit > 0)
+    {
+        <div class="mt-4 white-background">
+            <h4>Calculation Results</h4>
+            <p><strong>Maximum Affordable Loan Amount:</strong> @Model.MonthlyPaymentLimit.ToString("C")</p>
+        </div>
+    }
+</div>
+
+
+<style>
+    .container {
+        max-width: 600px;
+        margin: auto;
+        position: relative; 
+        z-index: 1; 
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .btn-group {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+    
+</style>

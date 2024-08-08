@@ -1,0 +1,66 @@
+﻿@model WebApp.Models.ViewModels.MortgagePaymentVM
+
+<div class="background-credit"></div>
+
+<div class="container mt-5">
+    <div class="btn-group" role="group" aria-label="Page switcher">
+        <a style="border: 2px solid black" asp-action="MortgagePayment" asp-controller="Home" class="btn btn-info">Mortgage Payment</a>
+        <a style="border: 2px solid black" asp-action="CreditCalculator" asp-controller="Home" asp-route-id="@Model.ProductId" class="btn btn-info button-NotSelect">Credit Calculator</a>
+    </div>
+
+    <h2>Calculating a Mortgage Payment</h2>
+    <form method="post" asp-action="MortgagePayment">
+        <div class="form-group">
+            <label for="loanAmount">Loan Amount</label>
+            @Html.TextBoxFor(m => m.LoanAmount, new { @class = "form-control", placeholder = "Enter loan amount" })
+        </div>
+        <div class="form-group">
+            <label for="interestRate">Annual Interest Rate (%)</label>
+            <input type="number" step="0.01" id="interestRate" name="InterestRate" class="form-control" placeholder="Enter interest rate" required value="@Model.InterestRate.ToString("F2")" />
+        </div>
+        <div class="form-group">
+            <label for="loanTerm">Loan Term (years)</label>
+            <input type="number" id="loanTerm" name="LoanTerm" class="form-control" placeholder="Enter loan term in years" required value="@Model.LoanTerm.ToString("F2")" />
+        </div>
+        <button type="submit" class="btn btn-primary">Calculate</button>
+    </form>
+
+    @if (Model.MonthlyPayment.HasValue)
+    {
+        <div class="mt-4 white-background">
+            <h4>Mortgage Payment Details</h4>
+            <p><strong>Loan Amount:</strong> @Model.LoanAmount.ToString("C")</p>
+            <p><strong>Annual Interest Rate:</strong> @Model.InterestRate %</p>
+            <p><strong>Loan Term:</strong> @Model.LoanTerm years</p>
+            <p><strong>Monthly Payment:</strong> @Model.MonthlyPayment.Value.ToString("C")</p>
+        </div>
+    }
+
+</div>
+
+
+<style>
+    .container {
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .btn-group {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+    
+</style>

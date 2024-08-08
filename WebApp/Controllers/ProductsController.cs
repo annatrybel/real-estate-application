@@ -4,11 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
 using WebApp.Models;
 using WebApp.Models.ViewModels;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using WebApp.Extensions;
 

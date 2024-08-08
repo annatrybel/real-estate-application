@@ -1,0 +1,135 @@
+﻿@model IEnumerable<WebApp.Models.Message>
+
+@if (Model.Count() > 0)
+{
+    <form method="post" id="messageForm">
+        <br />
+        <div class="backgroundWhiteBorder">
+            <div class="container row">
+                <div class="col-12">
+                    <div class="bookmark mt-4">
+                        <div class="bookmark-header bg-dark text-light ml-0 container" style="background-color: #f8f9fa; padding: 5px; border-radius: 5px;">
+                            <div class="col-12 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fa fa-envelope"></i>
+                                    <span style="font-size: 1.5rem; font-weight: bold;">Messages</span>
+                                </div>
+                                <div>
+                                    @foreach (var message in Model)
+                                    {
+                                        <button asp-action="ArchiveMessage" asp-route-id="@message.Id" type="submit" id="archiveSelectedButton" class="btn btn-outline-secondary d-none">
+                                            <i class="fas fa-archive"></i> Archive
+                                        </button>
+                                        <button asp-action="DeleteMessage" asp-route-id="@message.Id" type="submit" id="removeSelectedButton" class="btn btn-outline-danger d-none">
+                                            <i class="fas fa-trash"></i> Remove
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="bookmark-body">
+                            <div class="d-none d-lg-block">
+                                <div class="row" style="color:#821f3d; text-align: center; margin-top:10px;">
+                                    <div class="col-lg-1">
+                                        Select
+                                    </div>
+                                    <div class="col-lg-2">
+                                        Name
+                                    </div>
+                                    <div class="col-lg-3">
+                                        Email
+                                    </div>
+                                    <div class="col-lg-2">
+                                        Phone
+                                    </div>
+                                    <div class="col-lg-3">
+                                        Messages
+                                    </div>
+                                    <div class="col-lg-1">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            @foreach (var message in Model)
+                            {
+                                <div class="row h-100 message-row" style="text-align: center;">
+                                    <div class="col-12 col-lg-1 text-center py-2">
+                                        <input type="checkbox" name="selectedMessages" value="@message.Id" class="select-checkbox" />
+                                    </div>
+                                    <div class="col-12 col-lg-2 text-center py-2">
+                                        <p>@message.Name</p>
+                                    </div>
+                                    <div class="col-12 col-lg-3 text-center py-2">
+                                        <h5>@message.Email</h5>
+                                    </div>
+                                    <div class="col-12 col-lg-2 text-center py-2">
+                                        <p>@message.Phone</p>
+                                    </div>
+                                    <div class="col-12 col-lg-3 text-center py-2">
+                                        <span style="font-size:17px;">@message.Messages</span>
+                                    </div>
+                                    <div class="col-12 col-lg-1 text-center py-2">
+                                        <button asp-action="DeleteMessage" asp-route-id="@message.Id" type="submit" id="removeSelectedButton" class="btn btn-outline-danger">
+                                            <i class="fas fa-trash"></i> 
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+
+                            <hr />
+                        </div>
+                        <div class="bookmark-footer">
+                            <div class="row">
+                                <div class="col-12 col-md-3 offset-md-9">
+                                    <button asp-action="Index" asp-controller="Home" type="submit" class="btn btn-success form-control">
+                                        <span>Continue</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkboxes = document.querySelectorAll('.select-checkbox');
+            var removeButton = document.getElementById('removeSelectedButton');
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        this.closest('.message-row').classList.add('selected');
+                    } else {
+                        this.closest('.message-row').classList.remove('selected');
+                    }
+                    updateRemoveButton();
+                });
+            });
+
+            function updateRemoveButton() {
+                var anyChecked = document.querySelectorAll('.select-checkbox:checked').length > 0;
+                if (anyChecked) {
+                    removeButton.classList.remove('d-none');
+                } else {
+                    removeButton.classList.add('d-none');
+                }
+            }
+        });
+    </script>
+
+    <style>
+        .message-row.selected {
+            background-color: #f0f0f0;
+        }
+    </style>
+}
+else
+{
+    <p>No bookmarked items</p>
+}

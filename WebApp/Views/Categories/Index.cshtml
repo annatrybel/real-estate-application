@@ -1,4 +1,4 @@
-﻿@model Tuple<IEnumerable<WebApp.Models.Category>, IEnumerable<WebApp.Models.ListingsType>>
+﻿@model (IEnumerable<WebApp.Models.Category> categories, IEnumerable<WebApp.Models.ListingsType> listingsTypes)
 
 <div class="container p-3">
     <div class="row pt-4">
@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var category in Model.Item1)
+                @foreach (var category in Model.categories)
                 {
                     <tr>
                         <td width="50%">@category.Name</td>
@@ -66,7 +66,7 @@
 
     <br /><br />
 
-    @if (Model.Item2.Any())
+    @if (Model.listingsTypes.Any())
     {
         <table class="table table-bordered table-striped" style="width:100%">
             <thead>

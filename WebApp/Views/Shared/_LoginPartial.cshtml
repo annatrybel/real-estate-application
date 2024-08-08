@@ -18,7 +18,7 @@
                 @{
                     var count = HttpContextAccessor.HttpContext.Session.Get<List<Bookmarked>>(WC.Session)?.Count ?? 0;
                 }
-                Bookmarked (@count)
+                Bookmarks (@count)
             </a>
             <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create Admin User</a>
             <div class="dropdown-divider"></div>

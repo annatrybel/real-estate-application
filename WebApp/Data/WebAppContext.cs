@@ -19,5 +19,6 @@ namespace WebApp.Data
         public DbSet<WebApp.Models.Category> Category { get; set; } = default!;
         public DbSet<WebApp.Models.ListingsType> ListingsType { get; set; } = default!;
         public DbSet<WebApp.Models.Product> Product { get; set; } = default!;
+        public DbSet<WebApp.Models.Message> Message { get; set; } = default!;
     }
 }

@@ -13,8 +13,9 @@ namespace WebApp.Models
         public string Name { get; set; }
         public string? ShortDescription { get; set; }
         public string Description { get; set; }
-        [Range(0, int.MaxValue)]
-        public double Price { get; set; }
+        
+        [Range(0, double.MaxValue)] 
+        public decimal Price { get; set; }
         public string? Image { get; set; }
 
         [Display(Name = "Category Type")]

@@ -27,10 +27,8 @@ namespace WebApp.Controllers
         {
             var categories = await _context.Category.ToListAsync();
             var listingsTypes = await _context.ListingsType.ToListAsync();
-
-            var model = new Tuple<IEnumerable<Category>, IEnumerable<WebApp.Models.ListingsType>>(categories, listingsTypes);
-
-            return View(model);
+            
+            return View((categories, listingsTypes));
         }
 
         // GET: Categories/Details/5

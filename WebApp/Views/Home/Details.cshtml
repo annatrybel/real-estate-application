@@ -1,67 +1,78 @@
 ﻿@model WebApp.Models.ViewModels.DetailsVM
 @using WebApp.Extensions
 
-<div class="">
-    <form method="post">
-        <div class="containerInDetails">
-            <!-- Sekcja produktu -->
-            <div class="product-section">
-                <div class="backgroundWhite pt-4">
-                    <div class="details" style="border:1px solid #000000;">
-                        <div class="details-header bg-dark text-light d-flex align-items-center" style="border-radius: 0px;">
-                            <div style="margin-left: 15px;">
-                                <h2 class="text-white">@Model.Product.Name</h2>
-                                <h5 class="text-info">Offer ID: @Model.Product.Id</h5>
-                            </div>                    
-                        </div>
-
-                        <div class="details-body">
-                            <div class="rounded p-2">
-                                <div class="row">
-                                    <div class="col-12 col-lg-8 p-1">
-                                        <img src="~/images/product/@Model.Product.Image" class="img-fluid rounded uniform-img" alt="Product image" />
-                                    </div>
-                                    <div class="col-12 col-lg-4">
-                                        <div class="p-3">
-                                            <div class="mb-2">
-                                                <div><strong>Category:</strong> @Model.Product.Category.Name</div>
-                                                <div><strong>Listings Type:</strong> @Model.Product.ListingsType.Name</div>
-                                                <div><strong>Price:</strong> @Model.Product.Price.ToString("C")</div>
-                                                <div><strong>City:</strong> @Model.Product.City</div>                                                                          
-                                                <div><strong>Square Meters:</strong> @Model.Product.SquareMeters m²</div>
-                                                <div><strong>Market:</strong> @Model.Product.Market.GetDisplayName()</div>
-                                                <div><strong>Building Type:</strong> @Model.Product.Building.GetDisplayName()</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+<div class="container">
+    <div class="row">
+        <!-- Sekcja produktu -->
+        <div class="col-md-9">
+            <form method="post" asp-controller="Product" asp-action="AddToBookmarks">
+                <div class="product-section">
+                    <div class="backgroundWhite pt-4">
+                        <div class="details" style="border:1px solid #000000;">
+                            <div class="details-header bg-dark text-light d-flex align-items-center" style="border-radius: 0px;">
+                                <div class="col-12 col-md-8" style="margin-left: 15px;">
+                                    <h2 class="text-white">@Model.Product.Name</h2>
+                                    <h5 class="text-info">Offer ID: @Model.Product.Id</h5>
                                 </div>
-                                <p class="text-secondary">@Html.Raw(Model.Product.Description)</p>
-                            </div>
-                        </div>
-
-                        <div class="card-footer bg-dark">
-                            <div class="row">
-                                <div class="col-12 col-md-6 pb-1">
-                                    <a asp-action="Index" class="btn btn-success btn-square form-control btn-lg" style="height:50px;">Back to list</a>
-                                </div>
-                                <div class="col-12 col-md-6">
+                                <div class="col-12 col-md-3">
                                     @if (Model.ExistsInBookmarks)
                                     {
-                                        <a asp-action="RemoveFromBookmarked" asp-route-id="@Model.Product.Id" class="btn btn-warning btn-square form-control btn-lg" style="height:50px;">Remove from Bookmarked</a>
+                                        <a asp-action="RemoveFromBookmarked" asp-route-id="@Model.Product.Id" class="btn btn-warning btn-square form-control btn-lg" style="height:50px;">
+                                            <i class="fas fa-bookmark"></i> Remove from Bookmarked
+                                        </a>
                                     }
                                     else
                                     {
-                                        <button type="submit" asp-route-id="@Model.Product.Id" class="btn btn-info form-control btn-lg" style="height:50px;">Add to Bookmarked</button>
+                                        <button type="submit" asp-route-id="@Model.Product.Id" class="btn btn-info form-control btn-lg" style="height:50px;">
+                                            <i class="far fa-bookmark"></i> Add to Bookmarks
+                                        </button>
                                     }
+                                </div>
+                            </div>
+
+                            <div class="details-body">
+                                <div class="rounded p-2">
+                                    <div class="row">
+                                        <div class="col-12 col-lg-8">
+                                            <img src="~/images/product/@Model.Product.Image" class="img-fluid rounded uniform-img" alt="Product image" />
+                                        </div>
+                                        <div class="col-12 col-lg-4">
+                                            <div>
+                                                <div class="mb-2">
+                                                    <div class="info"><strong>Category:</strong> @Model.Product.Category.Name</div>
+                                                    <div class="info"><strong>Listings Type:</strong> @Model.Product.ListingsType.Name</div>
+                                                    <div class="info"><strong>Price:</strong> @Model.Product.Price.ToString("C")</div>
+                                                    <div class="info"><strong>Price per Square Meter:</strong> @(Model.Product.SquareMeters.HasValue && Model.Product.SquareMeters.Value > 0 ? (Model.Product.Price / Model.Product.SquareMeters.Value).ToString("C") : "N/A")</div>
+                                                    <div class="info"><strong>City:</strong> @Model.Product.City</div>
+                                                    <div class="info"><strong>Square Meters:</strong> @Model.Product.SquareMeters m²</div>
+                                                    <div class="info"><strong>Market:</strong> @Model.Product.Market.GetDisplayName()</div>
+                                                    <div class="info"><strong>Building Type:</strong> @Model.Product.Building.GetDisplayName()</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-secondary">@Html.Raw(Model.Product.Description)</p>
+                                </div>
+                            </div>
+
+                            <div class="card-footer bg-dark">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 pb-1">
+                                        <a asp-action="Index" class="btn btn-success btn-square form-control btn-lg" style="height:50px;">Back to list</a>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <a asp-action="MortgagePayment" asp-controller="Home" asp-route-id="@Model.Product.Id" class="btn btn-info form-control btn-lg" style="height:50px;">Calculating a mortgage payment</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
+        </div>
 
-            <!-- Sekcja formularza -->
+        <!-- Sekcja formularza -->
+        <div class="col-md-3">
             <div class="form-section">
                 <div class="backgroundWhite pt-4">
                     <div class="card" style="border:1px solid #000000;">
@@ -69,41 +80,43 @@
                             <div class="d-flex align-items-center mb-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24" class="me-2">
                                     <path fill="currentColor" fill-rule="evenodd" d="M18.388 19.978C10.62 19.634 4.365 13.38 4.022 5.612l3.515-1.406 2.149 4.299-1.664.832v.62a6.029 6.029 0 0 0 6.021 6.021h.62l.833-1.663 4.298 2.148-1.406 3.515Zm3.13-4.897-6.022-3.011-1.347.45-.704 1.407a4.023 4.023 0 0 1-3.372-3.372l1.408-.704.449-1.346-3.01-6.022L7.65 2 2.63 4.007 2 4.94C2 14.347 9.654 22 19.061 22l.932-.63L22 16.35l-.483-1.27Z" clip-rule="evenodd"></path>
-                                </svg>                        
-                                    <span>Phone number</span>                        
+                                </svg>
+                                <span>Phone number</span>
                             </div>
 
-                            <form method="post">
-                                <input asp-for="@Model.Product.Id" hidden />
+                            <form method="post" asp-controller="Message" asp-action="CreateMessage">
+                                @Html.AntiForgeryToken()
                                 <div class="form-group">
-                                    <label for="name">First Name</label>
-                                    <input type="text" id="name" name="name" class="form-control" placeholder="First Name*" />
+                                    <label class="control-label">Name</label>
+                                    <input asp-for="Message.Name" class="form-control" placeholder="First Name*" />
+                                    <span asp-validation-for="Message.Name" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" id="email" name="email" class="form-control" placeholder="Email*" />
+                                    <label class="control-label">Email</label>
+                                    <input asp-for="Message.Email" class="form-control" placeholder="Email*" />
+                                    <span asp-validation-for="Message.Email" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone Number" />
+                                    <label class="control-label">Phone</label>
+                                    <input asp-for="Message.Phone" class="form-control" placeholder="Phone Number" />
+                                    <span asp-validation-for="Message.Phone" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="message">Message</label>
-                                    <textarea id="message" name="message" class="form-control" rows="4" placeholder="Enter your message..."></textarea>
+                                    <label class="control-label">Messages</label>
+                                    <textarea asp-for="Message.Messages" class="form-control" rows="4" placeholder="Enter your message..."></textarea>
+                                    <span asp-validation-for="Message.Messages" class="text-danger"></span>
                                 </div>
-
                                 <button type="submit" class="sms btn btn-primary">Send Message</button>
                             </form>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 
 
@@ -165,4 +178,7 @@
         height: 400px;
         object-fit: cover;
     }
+   .info{
+       margin-bottom:10px;
+   }
 </style>

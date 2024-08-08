@@ -30,6 +30,7 @@ namespace WebApp.Controllers
             return View(homeVM);
         }
 
+
         public IActionResult Details(int id)
         {
             List<Bookmarked> bookmarkedList = new List<Bookmarked>();
@@ -42,6 +43,7 @@ namespace WebApp.Controllers
             DetailsVM detailsVM = new DetailsVM()
             {
                 Product = _context.Product.Include(p => p.Category).Include(p => p.ListingsType).Where(p => p.Id == id).FirstOrDefault(),
+                Message = new WebApp.Models.Message(),
                 ExistsInBookmarks = false
             };
 
@@ -72,6 +74,8 @@ namespace WebApp.Controllers
         }
 
 
+
+
       
         public IActionResult RemoveFromBookmarked(int id)
         {
@@ -90,6 +94,94 @@ namespace WebApp.Controllers
             HttpContext.Session.Set(WC.Session, bookmarkedList);
             return RedirectToAction(nameof(Index));
         }
+
+
+
+
+        [HttpGet]
+        public IActionResult MortgagePayment(int? id)
+        {
+            var product = _context.Product.Find(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var model = new MortgagePaymentVM
+            {
+                LoanAmount = product.Price,
+                ProductId = product.Id
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult MortgagePayment(MortgagePaymentVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.MonthlyPayment = CalculateMonthlyPayment(model.LoanAmount, model.InterestRate, model.LoanTerm);
+            }
+            return View(model);
+        }
+
+        private decimal CalculateMonthlyPayment(decimal loanAmount, double interestRate, int loanTerm)
+        {
+            var monthlyRate = (interestRate / 100) / 12;
+            var numberOfPayments = loanTerm * 12;
+
+            if (monthlyRate == 0)
+            {
+                return loanAmount / numberOfPayments;
+            }
+
+            var monthlyPayment = loanAmount * (decimal)((monthlyRate * Math.Pow(1 + monthlyRate, numberOfPayments)) / (Math.Pow(1 + monthlyRate, numberOfPayments) - 1));
+            return monthlyPayment;
+        }
+
+
+
+        [HttpGet]
+        public IActionResult CreditCalculator(int Id)
+        {
+            var model = new CreditCalculatorVM
+            {
+                ProductId = Id
+            };
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public IActionResult CreditCalculator(CreditCalculatorVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var maxMonthlyPayment = model.MonthlyIncome - model.MonthlyExpenses;
+                var loanAmount = model.LoanAmount;
+                var interestRate = model.InterestRate;
+                var loanTerm = model.LoanTerm;
+
+                var monthlyRate = (decimal)(interestRate / 100 / 12);
+                var numberOfPayments = loanTerm * 12;
+
+                if (monthlyRate == 0)
+                {
+                    model.MonthlyPaymentLimit = maxMonthlyPayment * numberOfPayments;
+                }
+                else
+                {
+                    var monthlyRateDouble = (double)monthlyRate;
+                    var maxMonthlyPaymentDouble = (double)maxMonthlyPayment;
+
+                    model.MonthlyPaymentLimit = (decimal)((maxMonthlyPaymentDouble / monthlyRateDouble) *
+                        (1 - Math.Pow(1 + monthlyRateDouble, -numberOfPayments)));
+                }
+            }
+            return View(model);
+        }
+
 
 
         public IActionResult Privacy()
