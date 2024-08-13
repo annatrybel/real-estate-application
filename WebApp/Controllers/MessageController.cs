@@ -18,12 +18,11 @@ namespace WebApp.Controllers
 
         public IActionResult Index()
         {
-            var messages = _context.Message.Where(m => !m.IsArchived).ToList();
+            var messages = _context.Message.AsNoTracking().Where(m => !m.IsArchived).ToList();
             return View(messages);
         }
 
-
-
+       
         public IActionResult CreateMessage([Bind("Name,Email,Phone,Messages")] WebApp.Models.Message message)
         {
             if (ModelState.IsValid)

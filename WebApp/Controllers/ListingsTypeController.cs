@@ -24,7 +24,7 @@ namespace WebApp.Controllers
         // GET: ApplicationTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ListingsType.ToListAsync());
+            return View(await _context.ListingsType.AsNoTracking().ToListAsync());
         }
 
         // GET: ApplicationTypes/Details/5

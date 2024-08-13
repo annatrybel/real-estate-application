@@ -29,10 +29,10 @@ namespace WebApp.Controllers
             IEnumerable<Product> objList =  _context.Product;
             foreach (var obj in objList)
             {
-                obj.Category = await _context.Category.FirstOrDefaultAsync(u => u.Id == obj.CategoryId);
-                obj.ListingsType = await _context.ListingsType.FirstOrDefaultAsync(u => u.Id == obj.ListingsTypeId);
+                obj.Category = await _context.Category.AsNoTracking().FirstOrDefaultAsync(u => u.Id == obj.CategoryId);
+                obj.ListingsType = await _context.ListingsType.AsNoTracking().FirstOrDefaultAsync(u => u.Id == obj.ListingsTypeId);
             }
-                var webAppContext = _context.Product.Include(p => p.Category);
+                var webAppContext = _context.Product.AsNoTracking().Include(p => p.Category);
             
             return View(objList);
         }
@@ -64,6 +64,13 @@ namespace WebApp.Controllers
                     }).ToList(),
                 BuildingTypeSelectList = Enum.GetValues(typeof(Product.BuildingType))
                     .Cast<Product.BuildingType>()
+                    .Select(e => new SelectListItem
+                    {
+                        Text = e.GetDisplayName(), 
+                        Value = e.ToString()
+                    }).ToList(),
+                StatusSelectList = Enum.GetValues(typeof(Product.ItemStatus))
+                    .Cast<Product.ItemStatus>()
                     .Select(e => new SelectListItem
                     {
                         Text = e.GetDisplayName(), 
@@ -188,7 +195,13 @@ namespace WebApp.Controllers
                         Text = e.GetDisplayName(),
                         Value = e.ToString()
                     }).ToList();
-
+            productVM.StatusSelectList = Enum.GetValues(typeof(Product.ItemStatus))
+                    .Cast<Product.ItemStatus>()
+                    .Select(e => new SelectListItem
+                    {
+                        Text = e.GetDisplayName(),
+                        Value = e.ToString()
+                    }).ToList();
             return View(productVM);
         }
 
@@ -226,6 +239,14 @@ namespace WebApp.Controllers
                     Text = e.ToString(),
                     Value = e.ToString(),
                     Selected = e == product.Building 
+                }).ToList(),
+                StatusSelectList = Enum.GetValues(typeof(Product.ItemStatus))
+                .Cast<Product.ItemStatus>()
+                .Select(e => new SelectListItem
+                {
+                    Text = e.ToString(),
+                    Value = e.ToString(),
+                    Selected = e == product.Status 
                 }).ToList()
             };
             if (product == null)

@@ -25,8 +25,8 @@ namespace WebApp.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            var categories = await _context.Category.ToListAsync();
-            var listingsTypes = await _context.ListingsType.ToListAsync();
+            var categories = await _context.Category.AsNoTracking().ToListAsync();
+            var listingsTypes = await _context.ListingsType.AsNoTracking().ToListAsync();
             
             return View((categories, listingsTypes));
         }

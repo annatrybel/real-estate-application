@@ -33,6 +33,7 @@ namespace WebApp.Models
 
         public BuildingType Building { get; set; }
         public DateTime DateAdded { get; set; }
+        public ItemStatus Status { get; set; }
 
 
         public Product()
@@ -59,6 +60,18 @@ namespace WebApp.Models
 
             [Display(Name = "Townhouse")]
             Townhouse
+        }
+
+        public enum ItemStatus
+        {
+            [Display(Name = "Active")]
+            Active,
+
+            [Display(Name = "Reserved")]
+            Reserved,
+
+            [Display(Name = "Sold")]
+            Sold
         }
     }
 }

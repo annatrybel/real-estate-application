@@ -10,5 +10,6 @@ namespace WebApp.Models.ViewModels
         public IEnumerable<SelectListItem>? ListingsTypeSelectList { get; set; }
         public IEnumerable<SelectListItem>? MarketSelectList { get; set; }
         public IEnumerable<SelectListItem>? BuildingTypeSelectList { get; set; }
+        public IEnumerable<SelectListItem>? StatusSelectList { get; set; }
     }
 }

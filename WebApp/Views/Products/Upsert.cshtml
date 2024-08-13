@@ -147,6 +147,18 @@
                     </div>
                 </div>
 
+                <div class="form-group row mt-3">
+                    <div class="col-4">
+                        <label asp-for="Product.Status"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="Product.Status" asp-items="@Model.StatusSelectList" class="form-control">
+                            <option disabled selected>--Choose Status--</option>
+                        </select>
+                        <span asp-validation-for="Product.Status" class="text-danger"></span>
+                    </div>
+                </div>
+
                 <div class="form-group row mt-4">
                     <div class="col-8 offset-4 row">
                         <div class="col mr-2">

@@ -19,19 +19,36 @@ namespace WebApp.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
-        {
-            HomeVM homeVM = new HomeVM()
-            {
-                Products = _context.Product.Include(p => p.Category).Include(p => p.ListingsType),
-                Categories = _context.Category,
-                ListingsType = _context.ListingsType
-            };
-            return View(homeVM);
-        }
+       
+
+		public IActionResult Index(int page = 1, int pageSize = 30)
+		{
+			var productsQuery = _context.Product.AsNoTracking()
+								.Include(p => p.Category)
+								.Include(p => p.ListingsType);
+
+			int totalItems = productsQuery.Count();
+			var products = productsQuery.Skip((page - 1) * pageSize)
+										.Take(pageSize)
+										.ToList();
+
+			HomeVM homeVM = new HomeVM()
+			{
+				Products = products,
+				Categories = _context.Category.AsNoTracking().ToList(),
+				ListingsType = _context.ListingsType.AsNoTracking().ToList(),
+				CurrentPage = page,
+				TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
+			};
+
+			return View(homeVM);
+		}
 
 
-        public IActionResult Details(int id)
+
+
+
+		public IActionResult Details(int id)
         {
             List<Bookmarked> bookmarkedList = new List<Bookmarked>();
             if (HttpContext.Session.Get<IEnumerable<Bookmarked>>(WC.Session) != null
