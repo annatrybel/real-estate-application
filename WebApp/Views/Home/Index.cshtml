@@ -9,6 +9,33 @@
         }
 
     </div>
+
+    
+    <div class="search-section mx-auto mt-4 p-3">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="price-filter" placeholder="Price" />
+            </div>
+            <div class="col-md-4 position-relative">
+                <input type="text" class="form-control city-filter" id="city-filter" placeholder="City" />
+                <i class="fa-solid fa-location-dot position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%); font-size: 18px;"></i>
+            </div>
+            <div class="col-md-3">
+                <select class="form-control" id="type-filter">
+                    <option value="">Select Type</option>
+                    @foreach (var type in Model.ListingsType)
+                    {
+                        <option value="@type.Name">@type.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100" id="apply-filters">Apply</button>
+            </div>
+        </div>
+    </div>
+
+
     <br />
     <div class="row" id="product-container">
         @foreach (var obj in Model.Products)
@@ -155,4 +182,24 @@
             color: #ffffff; 
         }
 
+
+
+    .search-section {
+        background-color: white; 
+        border-radius: 0.25rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        max-width: 600px;
+    }
+
+    .position-relative {
+        position: relative;
+    }
+   
+    .city-filter {
+        padding-left: 2.5rem; 
+    }
+
+        .city-filter::placeholder {
+            padding-left: 2.5rem; 
+        }
 </style>
