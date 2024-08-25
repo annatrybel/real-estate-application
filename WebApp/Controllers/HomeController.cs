@@ -19,36 +19,64 @@ namespace WebApp.Controllers
             _context = context;
         }
 
-       
 
-		public IActionResult Index(int page = 1, int pageSize = 30)
-		{
-			var productsQuery = _context.Product.AsNoTracking()
-								.Include(p => p.Category)
-								.Include(p => p.ListingsType);
+        public IActionResult Index(int page = 1, int pageSize = 30, string category = "", decimal? maxPrice = null, string city = "", string listingType = "")
+        {
+            var productsQuery = _context.Product.AsNoTracking()
+                .Include(p => p.Category)
+                .Include(p => p.ListingsType)
+                .AsQueryable();
 
-			int totalItems = productsQuery.Count();
-			var products = productsQuery.Skip((page - 1) * pageSize)
-										.Take(pageSize)
-										.ToList();
+            
+            if (!string.IsNullOrEmpty(category))
+            {
+                productsQuery = productsQuery.Where(p => p.Category.Name == category);
+            }
 
-			HomeVM homeVM = new HomeVM()
-			{
-				Products = products,
-				Categories = _context.Category.AsNoTracking().ToList(),
-				ListingsType = _context.ListingsType.AsNoTracking().ToList(),
-				CurrentPage = page,
-				TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
-			};
+            if(category == "all")
+            {
+                productsQuery = _context.Product.AsNoTracking()
+                .Include(p => p.Category)
+                .Include(p => p.ListingsType)
+                .AsQueryable();
+            }
 
-			return View(homeVM);
-		}
+            if (maxPrice.HasValue)
+            {
+                productsQuery = productsQuery.Where(p => p.Price <= maxPrice.Value);
+            }
+
+            if (!string.IsNullOrEmpty(city))
+            {
+                productsQuery = productsQuery.Where(p => p.City.Contains(city));
+            }
+
+            if (!string.IsNullOrEmpty(listingType))
+            {
+                productsQuery = productsQuery.Where(p => p.ListingsType.Name == listingType);
+            }
+
+            int totalItems = productsQuery.Count();
+            var products = productsQuery.Skip((page - 1) * pageSize)
+                                        .Take(pageSize)
+                                        .ToList();
+
+            var homeVM = new HomeVM()
+            {
+                Products = products,
+                Categories = _context.Category.AsNoTracking().ToList(),
+                ListingsType = _context.ListingsType.AsNoTracking().ToList(),
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
+            };
+            var sql = productsQuery.ToQueryString();
+            return View(homeVM);
+        }
 
 
 
 
-
-		public IActionResult Details(int id)
+        public IActionResult Details(int id)
         {
             List<Bookmarked> bookmarkedList = new List<Bookmarked>();
             if (HttpContext.Session.Get<IEnumerable<Bookmarked>>(WC.Session) != null
@@ -91,7 +119,19 @@ namespace WebApp.Controllers
         }
 
 
-      
+        public IActionResult CreateMessage([Bind("Name,Email,Phone,Messages")] WebApp.Models.Message message)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(message);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+
+
         public IActionResult RemoveFromBookmarked(int id)
         {
             List<Bookmarked> bookmarkedList = new List<Bookmarked>();

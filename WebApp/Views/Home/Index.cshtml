@@ -9,7 +9,7 @@
         }
 
     </div>
-
+ 
     
     <div class="search-section mx-auto mt-4 p-3">
         <div class="row g-3">
@@ -75,17 +75,78 @@
         $(document).ready(function () {
             $(".filter-button").click(function () {
                 var value = $(this).attr('data-filter');
-                if (value == "all") {
+
+                if (value === "all") {
                     $('.filter').show('1000');
                 } else {
                     $(".filter").not('.' + value).hide('3000');
                     $('.filter').filter('.' + value).show('3000');
                 }
+
+                $(".filter-button").removeClass('active');
+                $(this).addClass('active');
+
+                
+                var category = $(".filter-button.active").data('filter') || '';
+
+                $.ajax({
+                    url: '@Url.Action("Index", "Home")',
+                    type: 'GET',
+                    data: {
+                        page: 1,
+                        category: category,
+                        maxPrice: null, 
+                        city: null,    
+                        listingType: null 
+                    },
+                    success: function (data) {
+                        $("#product-container").html($(data).find("#product-container").html());
+                        $("#pagination-container").html($(data).find("#pagination-container").html());
+                        $("#load-more").data('current-page', 1);
+                    },
+                    error: function () {
+                        alert('Wystąpił błąd podczas ładowania danych.');
+                    }
+                });
             });
         });
     </script>
 
+    <script>
+        $(document).ready(function () {
+            $("#apply-filters").click(function () {
+                var category = $(".filter-button.active").data('filter') || '';
+                var maxPrice = $("#price-filter").val() || '';
+                var city = $("#city-filter").val() || '';
+                var listingType = $("#type-filter").val() || '';
 
+                $.ajax({
+                    url: '@Url.Action("Index", "Home")',
+                    type: 'GET',
+                    data: {
+                        page: 1,  
+                        category: category,
+                        maxPrice: maxPrice,
+                        city: city,
+                        listingType: listingType
+                    },
+                    success: function (data) {
+                        $("#product-container").html($(data).find("#product-container").html());
+                        $("#pagination-container").html($(data).find("#pagination-container").html());
+                        $("#load-more").data('current-page', 1);
+                    },
+                    error: function () {
+                        alert('Wystąpił błąd podczas ładowania danych.');
+                    }
+                });
+            });
+
+            $(".filter-button").click(function () {
+                $(".filter-button").removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function () {
@@ -93,21 +154,28 @@
                 var button = $(this);
                 var currentPage = parseInt(button.data('current-page'));
                 var totalPages = parseInt(button.data('total-pages'));
+                var category = $(".filter-button.active").data('filter') || '';
+                var maxPrice = $("#price-filter").val() || '';
+                var city = $("#city-filter").val() || '';
+                var listingType = $("#type-filter").val() || '';
 
                 if (currentPage < totalPages) {
                     $.ajax({
                         url: '@Url.Action("Index", "Home")',
                         type: 'GET',
                         data: {
-                            page: currentPage + 1
+                            page: currentPage + 1,
+                            category: category,
+                            maxPrice: maxPrice,
+                            city: city,
+                            listingType: listingType
                         },
                         success: function (data) {
                             var newProducts = $(data).find("#product-container").html();
                             var newPagination = $(data).find("#pagination-container").html();
 
-                            
                             if (newProducts.trim().length === 0) {
-                                button.hide(); 
+                                button.hide();
                             } else {
                                 $("#product-container").append(newProducts);
                                 $("#pagination-container").html(newPagination);
@@ -119,10 +187,11 @@
                         }
                     });
                 } else {
-                    button.hide(); 
+                    button.hide();
                 }
             });
         });
+
     </script>
 }
 

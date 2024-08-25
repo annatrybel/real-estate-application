@@ -22,19 +22,8 @@ namespace WebApp.Controllers
             return View(messages);
         }
 
-       
-        public IActionResult CreateMessage([Bind("Name,Email,Phone,Messages")] WebApp.Models.Message message)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(message);
-                _context.SaveChanges();
-                return RedirectToAction("Index", "Home");
-            }
-            return RedirectToAction("Index", "Home");
-        }
-
-       
+      
+           
 
         [HttpPost]
         public IActionResult DeleteMessageFromArchive(int id)

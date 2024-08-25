@@ -92,8 +92,6 @@ namespace WebApp.Controllers
                     return NotFound();
                 }
 
-
-                _logger.LogInformation("Editing Product: {@Product}", productVM.Product);
                 return View(productVM);
             }
         }

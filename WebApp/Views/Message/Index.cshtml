@@ -22,7 +22,7 @@
                                 <div>
                                     @foreach (var message in Model)
                                     {
-                                        <button asp-action="ArchiveSelectedMessages" asp-route-id=" @message.Id" type="submit" id="archiveSelectedButton" class="btn btn-outline-secondary d-none">
+                                        <button asp-action="ArchiveSelectedMessages" asp-route-id=" @message.Id" type="submit" id="archiveSelectedButton" class="btn btn-outline-light d-none">
                                             <i class="fas fa-archive"></i> Archive
                                         </button>
                                         <button asp-action="DeleteSelectedMessages" asp-route-id="@message.Id" type="submit" id="removeSelectedButton" class="btn btn-outline-danger d-none">
@@ -88,5 +88,5 @@
 }
 else
 {
-    <p>No bookmarked items</p>
+    <p>No messages</p>
 }

@@ -20,7 +20,10 @@
                 }
                 Bookmarks (@count)
             </a>
-            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create Admin User</a>
+            @if (User.IsInRole(WC.AdminRole))
+            {
+                <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create Admin User</a>
+            }
             <div class="dropdown-divider"></div>
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" method="post">
                 <button type="submit" class="dropdown-item">Log out</button>

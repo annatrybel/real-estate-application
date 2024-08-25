@@ -19,8 +19,10 @@ namespace WebApp.Models
         public string Email { get; set; }
 
         [Phone(ErrorMessage = "Invalid Phone Number")]
+        [StringLength(15, ErrorMessage = "Phone number cannot be longer than 15 digits")]
         public string? Phone { get; set; }
 
+        [StringLength(500, ErrorMessage = "Message cannot be longer than 500 characters")]
         public string? Messages { get; set; }
         public bool IsArchived { get; set; }
     }

@@ -82,7 +82,7 @@
                                 <span>Phone number</span>
                             </div>
 
-                            <form method="post" asp-controller="Message" asp-action="CreateMessage">
+                            <form method="post" asp-controller="Home" asp-action="CreateMessage">
                                 @Html.AntiForgeryToken()
                                 <div class="form-group">
                                     <label class="control-label">Name</label>
@@ -98,7 +98,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Phone</label>
-                                    <input asp-for="Message.Phone" class="form-control" placeholder="Phone Number" />
+                                    <input asp-for="Message.Phone" class="form-control" placeholder="Phone Number" oninput="this.value = this.value.replace(/[^0-9+]/g, '');" />
                                     <span asp-validation-for="Message.Phone" class="text-danger"></span>
                                 </div>
 
@@ -180,3 +180,5 @@
        margin-bottom:10px;
    }
 </style>
+
+    
