@@ -80,7 +80,7 @@
                 @foreach (var listingsType in Model.listingsTypes)
                 {
                     <tr>
-                        <td width="50%">@listingsType.Name</td>
+                        <td width="80%">@listingsType.Name</td>
                         <td class="text-center">
                             <div class="w-75 btn-group" role="group">
                                 <a asp-controller="ListingsType" asp-action="Edit" asp-route-id="@listingsType.Id" class="btn btn-primary mx-2">

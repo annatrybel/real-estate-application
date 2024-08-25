@@ -34,7 +34,15 @@
                             <td width="15%">@obj.Price.ToString("C")</td>
                             <td width="30%">@Html.Raw(obj.ShortDescription)</td>
                             <td width="20%">
-                                <img src="/Images/product/@obj.Image" style="width: 100%; max-height: 100px; object-fit: cover;" />
+                                @if (obj.Images != null && obj.Images.Any())
+                                {
+                                    var firstImage = obj.Images.First();
+                                    <img src="~/Images/products/@firstImage.ImageUrl" style="width: 100%; max-height: 100px; object-fit: cover;" alt="Product image" />
+                                }
+                                else
+                                {
+                                    <p>No image available</p>
+                                }
                             </td>
                             <td width="20%">@obj.Category.Name</td>
                             <td width="20%">@obj.ListingsType.Name</td>

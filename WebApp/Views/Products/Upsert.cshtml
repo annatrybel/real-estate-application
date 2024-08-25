@@ -1,7 +1,7 @@
 ﻿@model WebApp.Models.ViewModels.ProductVM
 
 @{
-    var title = "Create Product";
+    var title = "Create Offer";
 }
 
 @if (!ViewData.ModelState.IsValid)
@@ -19,7 +19,7 @@
 <form method="post" asp-action="Upsert" enctype="multipart/form-data">
     @if (Model.Product.Id != 0)
     {
-        title = "Edit Product";
+        title = "Edit Offer";
         <input asp-for="Product.Id" hidden />
     }
 
@@ -116,7 +116,7 @@
 
                 <div class="form-group row mt-3">
                     <div class="col-4">
-                        Image
+                        <label asp-for="Product.Images">Images</label>
                     </div>
                     <div class="col-8">
                         <input type="file" name="files" id="uploadBox" multiple class="form-control" />

@@ -36,7 +36,10 @@
                             @foreach(var obj in Model){
                                 <div class="row h-100">
                                     <div class="col-4 col-md-2 text-center py-2">
-                                    <img class="rounded" src="~/Images/product/@obj.Image" alt="Product image" width="100%" />
+                                        @foreach (var image in obj.Images) // Iterujemy przez obrazy produktu
+                                        {
+                                            <img class="rounded me-2" src="~/Images/products/@image.ImageUrl" alt="Product image" style="max-width:150px; max-height:100px;" />
+                                        }
                                     </div>
                                     <div class="col-8 col-lg-7">
                                         <h5>@obj.Name</h5>

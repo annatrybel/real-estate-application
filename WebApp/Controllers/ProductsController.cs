@@ -31,6 +31,7 @@ namespace WebApp.Controllers
             {
                 obj.Category = await _context.Category.AsNoTracking().FirstOrDefaultAsync(u => u.Id == obj.CategoryId);
                 obj.ListingsType = await _context.ListingsType.AsNoTracking().FirstOrDefaultAsync(u => u.Id == obj.ListingsTypeId);
+                obj.Images = await _context.ProductImage.AsNoTracking().Where(u => u.ProductId == obj.Id).ToListAsync();
             }
                 var webAppContext = _context.Product.AsNoTracking().Include(p => p.Category);
             
@@ -98,56 +99,110 @@ namespace WebApp.Controllers
 
 
 
-        // POST: Products/Upsert
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(ProductVM productVM)
         {
             if (ModelState.IsValid)
             {
-                string webRootPath = _webHostEnvironment.ContentRootPath;
+                string webRootPath = _webHostEnvironment.WebRootPath;
                 var files = HttpContext.Request.Form.Files;
 
                 if (files.Count > 0)
                 {
-                    string fileName = Guid.NewGuid().ToString();
-                    var uploads = Path.Combine(webRootPath, "wwwroot\\images\\product");
-                    var extension = Path.GetExtension(files[0].FileName);
-
-
-                    if(!System.IO.Directory.Exists(uploads))
+                    if (productVM.Product.Images.Any())
                     {
-                        System.IO.Directory.CreateDirectory(uploads);
-                    }
-
-
-                    if (productVM.Product.Image != null)
-                    {
-                        var imagePath = Path.Combine(webRootPath, "wwwroot\\images\\product");
-                        if (System.IO.File.Exists(imagePath))
+                        foreach (var image in productVM.Product.Images.ToList())
                         {
-                            System.IO.File.Delete(imagePath);
+                            var oldImagePath = Path.Combine(webRootPath, "images", "products", image.ImageUrl);
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);
+                            }
                         }
+
+                        productVM.Product.Images.Clear();
                     }
 
-                    using (var fileStream = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                    foreach (var file in files)
                     {
-                        files[0].CopyTo(fileStream);
+                        // Generuje unikalną nazwę dla pliku
+                        string fileName = Guid.NewGuid().ToString();
+                        var uploads = Path.Combine(webRootPath, "images", "products");
+                        var extension = Path.GetExtension(file.FileName);
+
+                        if (!Directory.Exists(uploads))
+                        {
+                            Directory.CreateDirectory(uploads);
+                        }
+
+                        using (var fileStream = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                        {
+                            file.CopyTo(fileStream);
+                        }
+
+                        var productImage = new ProductImage
+                        {
+                            ImageUrl = fileName + extension,
+                            Product = productVM.Product
+                        };
+
+                        productVM.Product.Images.Add(productImage);
                     }
-                    productVM.Product.Image = fileName + extension;
                 }
                 else
                 {
                     if (productVM.Product.Id != 0)
                     {
-                        Product objFromDb = await _context.Product.AsNoTracking().FirstOrDefaultAsync(u => u.Id == productVM.Product.Id);
+                        Product objFromDb = await _context.Product
+                            .Include(p => p.Images) 
+                            .FirstOrDefaultAsync(u => u.Id == productVM.Product.Id);
+
                         if (objFromDb != null)
                         {
-                            productVM.Product.Image = objFromDb.Image;
+                            productVM.Product.Images = objFromDb.Images;
                         }
                     }
                 }
+               
 
+                productVM.CategorySelectList = _context.Category.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }).ToList();
+
+                productVM.ListingsTypeSelectList = _context.ListingsType.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }).ToList();
+
+                productVM.MarketSelectList = Enum.GetValues(typeof(Product.MarketType))
+                    .Cast<Product.MarketType>()
+                    .Select(e => new SelectListItem
+                    {
+                        Text = e.GetDisplayName(),
+                        Value = e.ToString()
+                    }).ToList();
+
+                productVM.BuildingTypeSelectList = Enum.GetValues(typeof(Product.BuildingType))
+                    .Cast<Product.BuildingType>()
+                    .Select(e => new SelectListItem
+                    {
+                        Text = e.GetDisplayName(),
+                        Value = e.ToString()
+                    }).ToList();
+
+                productVM.StatusSelectList = Enum.GetValues(typeof(Product.ItemStatus))
+                    .Cast<Product.ItemStatus>()
+                    .Select(e => new SelectListItem
+                    {
+                        Text = e.GetDisplayName(),
+                        Value = e.ToString()
+                    }).ToList();
+
+                
                 if (productVM.Product.Id == 0)
                 {
                     _context.Product.Add(productVM.Product);
@@ -158,50 +213,12 @@ namespace WebApp.Controllers
                 }
 
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-
-            foreach (var state in ModelState)
-            {
-                foreach (var error in state.Value.Errors)
-                {
-                    Console.WriteLine($"Error in {state.Key}: {error.ErrorMessage}");
-                }
-            }
-
-            productVM.CategorySelectList = _context.Category.Select(i => new SelectListItem
-            {
-                Text = i.Name,
-                Value = i.Id.ToString()
-            }).ToList();
-            productVM.ListingsTypeSelectList = _context.ListingsType.Select(i => new SelectListItem
-            {
-                Text = i.Name,
-                Value = i.Id.ToString()
-            }).ToList();
-            productVM.MarketSelectList = Enum.GetValues(typeof(Product.MarketType))
-                    .Cast<Product.MarketType>()
-                    .Select(e => new SelectListItem
-                    {
-                        Text = e.GetDisplayName(),
-                        Value = e.ToString()
-                    }).ToList();
-            productVM.BuildingTypeSelectList = Enum.GetValues(typeof(Product.BuildingType))
-                    .Cast<Product.BuildingType>()
-                    .Select(e => new SelectListItem
-                    {
-                        Text = e.GetDisplayName(),
-                        Value = e.ToString()
-                    }).ToList();
-            productVM.StatusSelectList = Enum.GetValues(typeof(Product.ItemStatus))
-                    .Cast<Product.ItemStatus>()
-                    .Select(e => new SelectListItem
-                    {
-                        Text = e.GetDisplayName(),
-                        Value = e.ToString()
-                    }).ToList();
             return View(productVM);
         }
+
 
 
 
@@ -217,6 +234,7 @@ namespace WebApp.Controllers
             var product = await _context.Product
                 .Include(p => p.Category)
                 .Include(p => p.ListingsType)
+                .Include(p => p.Images)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             var productVM = new ProductVM
@@ -255,29 +273,39 @@ namespace WebApp.Controllers
             return View(product);
         }
 
+
+
         // POST: Products/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _context.Product.FindAsync(id);
+            var product = await _context.Product
+                .Include(p => p.Images) 
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
             {
                 return NotFound();
             }
 
-            // Ścieżka do katalogu, gdzie przechowywane są obrazy
-            string webRootPath = _webHostEnvironment.ContentRootPath;
-            var imagePath = Path.Combine(webRootPath, "wwwroot\\images\\product", product.Image);
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            var imagesFolderPath = Path.Combine(webRootPath, "images", "products");
 
-            if (!string.IsNullOrEmpty(product.Image) && System.IO.File.Exists(imagePath))
+            foreach (var image in product.Images.ToList())
             {
-                System.IO.File.Delete(imagePath);
+                var imagePath = Path.Combine(imagesFolderPath, image.ImageUrl);
+
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath); 
+                }
+
+                _context.ProductImage.Remove(image); 
             }
 
             _context.Product.Remove(product);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); 
 
             return RedirectToAction(nameof(Index));
         }

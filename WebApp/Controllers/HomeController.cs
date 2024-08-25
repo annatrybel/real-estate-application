@@ -25,19 +25,21 @@ namespace WebApp.Controllers
             var productsQuery = _context.Product.AsNoTracking()
                 .Include(p => p.Category)
                 .Include(p => p.ListingsType)
+                .Include(p => p.Images)
                 .AsQueryable();
 
             
-            if (!string.IsNullOrEmpty(category))
+            if (!string.IsNullOrEmpty(category) && category != "all")
             {
                 productsQuery = productsQuery.Where(p => p.Category.Name == category);
             }
-
+           
             if(category == "all")
             {
                 productsQuery = _context.Product.AsNoTracking()
                 .Include(p => p.Category)
                 .Include(p => p.ListingsType)
+                .Include(p => p.Images)
                 .AsQueryable();
             }
 
@@ -87,7 +89,7 @@ namespace WebApp.Controllers
 
             DetailsVM detailsVM = new DetailsVM()
             {
-                Product = _context.Product.Include(p => p.Category).Include(p => p.ListingsType).Where(p => p.Id == id).FirstOrDefault(),
+                Product = _context.Product.Include(p => p.Category).Include(p => p.ListingsType).Include(p=>p.Images).Where(p => p.Id == id).FirstOrDefault(),
                 Message = new WebApp.Models.Message(),
                 ExistsInBookmarks = false
             };

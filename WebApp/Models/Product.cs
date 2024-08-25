@@ -16,7 +16,8 @@ namespace WebApp.Models
         
         [Range(0, double.MaxValue)] 
         public decimal Price { get; set; }
-        public string? Image { get; set; }
+        public ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
+
 
         [Display(Name = "Category Type")]
         public int? CategoryId { get; set; }
@@ -74,4 +75,5 @@ namespace WebApp.Models
             Sold
         }
     }
+    
 }
