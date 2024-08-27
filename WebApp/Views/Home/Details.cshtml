@@ -91,6 +91,10 @@
                             </div>
 
                             <div class="row mt-3">
+                                <div id="map" class="col-12 d-flex justify-content-start" style="height: 500px;"></div>
+                            </div>
+
+                            <div class="row mt-3">
                                 <div class="col-12 d-flex justify-content-end">
                                     <a asp-action="MortgagePayment" asp-controller="Home" asp-route-id="@Model.Product.Id" class="btn btn-info btn-lg" style="height:40px;margin-bottom:10px; padding:5px;">Calculating a mortgage payment</a>
                                 </div>
@@ -109,9 +113,7 @@
                     <div class="card" style="border:1px solid #000000;">
                         <div class="card-body">
                             <div class="d-flex align-items-center mb-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="none" viewBox="0 0 24 24" class="me-2">
-                                    <path fill="currentColor" fill-rule="evenodd" d="M18.388 19.978C10.62 19.634 4.365 13.38 4.022 5.612l3.515-1.406 2.149 4.299-1.664.832v.62a6.029 6.029 0 0 0 6.021 6.021h.62l.833-1.663 4.298 2.148-1.406 3.515Zm3.13-4.897-6.022-3.011-1.347.45-.704 1.407a4.023 4.023 0 0 1-3.372-3.372l1.408-.704.449-1.346-3.01-6.022L7.65 2 2.63 4.007 2 4.94C2 14.347 9.654 22 19.061 22l.932-.63L22 16.35l-.483-1.27Z" clip-rule="evenodd"></path>
-                                </svg>
+                                <i class="fa-solid fa-phone" style="margin-right:10px;"></i>
                                 <span>Phone number</span>
                             </div>
 
@@ -137,9 +139,11 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Messages</label>
-                                    <textarea asp-for="Message.Messages" class="form-control" rows="4" placeholder="Enter your message..."></textarea>
+                                    <textarea asp-for="Message.Messages" class="form-control" rows="5" placeholder="Enter your message..."
+                                              style="resize: none;"></textarea>
                                     <span asp-validation-for="Message.Messages" class="text-danger"></span>
                                 </div>
+
                                 <button type="submit" class="sms btn btn-primary">Send Message</button>
                             </form>
                         </div>
@@ -150,6 +154,44 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var cityName = "@Model.Product.City";
+
+        var map = L.map('map').setView([0, 0], 13); // Ustawia początkowy widok mapy na współrzędne [0, 0] i poziom powiększenia 13
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Funkcja do geokodowania nazwy miasta
+        function geocodeCity(cityName) {
+            var geocodeUrl = `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(cityName)}&format=json&limit=1`;
+
+            fetch(geocodeUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        var city = data[0];
+                        var lat = city.lat;
+                        var lon = city.lon;
+                        var displayName = city.display_name;
+
+                        map.setView([lat, lon], 13);
+
+                        // Dodanie markera z popupem
+                        var marker = L.marker([lat, lon]).addTo(map);
+                        marker.bindPopup(`<strong>City:</strong> ${displayName}`).openPopup();
+                    } else {
+                        console.error("City not found");
+                    }
+                })
+                .catch(error => console.error("Error fetching city data:", error));
+        }
+
+        geocodeCity(cityName);
+    });
+</script>
 
 
 <style>
