@@ -19,7 +19,9 @@
             <div class="col-md-4 position-relative">
                 <input type="text" class="form-control city-filter" id="city-filter" placeholder="City" />
                 <i class="fa-solid fa-location-dot position-absolute" style="top: 50%; left: 10px; transform: translateY(-50%); font-size: 18px;"></i>
+                <ul id="city-suggestions" class="list-group position-absolute" style="z-index: 1000; top: 100%; left: 0; right: 0; max-height: 200px; overflow-y: auto;"></ul>
             </div>
+
             <div class="col-md-3">
                 <select class="form-control" id="type-filter">
                     <option value="">Select Type</option>
@@ -188,6 +190,59 @@
                     });
                 } else {
                     button.hide();
+                }
+            });
+        });
+
+    </script>
+
+
+    <script>   
+        $(document).ready(function () {                        
+            $("#city-filter").on("input", function () {
+                var query = $(this).val();
+                var suggestions = $("#city-suggestions");
+
+                suggestions.empty(); // wyczyscic poprzednie sugestie
+
+                if (query.length > 1) {
+                    $.ajax({
+                        url: 'https://secure.geonames.org/searchJSON',
+                        type: 'GET',
+                        data: {
+                            q: query,
+                            maxRows: 5,
+                            username: '' 
+                        },
+                        success: function (data) {
+                            if (data.geonames && data.geonames.length > 0) {
+                                data.geonames.forEach(function (city) {
+                                    suggestions.append(`<li class="list-group-item suggestion-item" data-name="${city.name}" data-country="${city.countryName}">${city.name}, ${city.countryName}</li>`);
+                                });
+                            } else {
+                                suggestions.append('<li class="list-group-item">No results found</li>');
+                            }
+
+                            // po kliknięciu na sugestię
+                            $(".suggestion-item").on("click", function () {
+                                var selectedCityName = $(this).data("name");
+
+                                $("#city-filter").val(selectedCityName);
+
+                                suggestions.empty();
+                            });
+                        },
+                        error: function () {
+                            console.log('Wystąpił błąd podczas ładowania miast.');
+                        }
+                    });
+                }
+            });
+
+            // Ukryc sugestie po kliknięciu poza element
+            $(document).on("click", function (event) {
+                if (!$(event.target).closest("#city-filter, #city-suggestions").length) {
+                    $("#city-suggestions").empty();
                 }
             });
         });
