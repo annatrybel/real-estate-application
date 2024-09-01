@@ -201,8 +201,8 @@ namespace WebApp.Controllers
                         Text = e.GetDisplayName(),
                         Value = e.ToString()
                     }).ToList();
+                              
 
-                
                 if (productVM.Product.Id == 0)
                 {
                     _context.Product.Add(productVM.Product);

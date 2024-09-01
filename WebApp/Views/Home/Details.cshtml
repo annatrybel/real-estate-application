@@ -75,11 +75,14 @@
                                                 <div class="mb-2">
                                                     <div class="info"><strong>Category:</strong> @Model.Product.Category.Name</div>
                                                     <div class="info"><strong>Listings Type:</strong> @Model.Product.ListingsType.Name</div>
-                                                    <div class="info"><strong>Price:</strong> @Model.Product.Price.ToString("C")</div>
-                                                    <div class="info"><strong>Price per Square Meter:</strong> @(Model.Product.SquareMeters.HasValue && Model.Product.SquareMeters.Value > 0 ? (Model.Product.Price / Model.Product.SquareMeters.Value).ToString("C") : "N/A")</div>
+                                                    <div class="info"><strong>Price:</strong> @Model.Product.Price.ToString("C")</div>                                                    
                                                     <div class="info"><strong>City:</strong> @Model.Product.City</div>
+                                                    @if (Model.Product.ListingsType.Name == "For Sale")
+                                                    {
+                                                        <div class="info"><strong>Price per Square Meter:</strong> @(Model.Product.SquareMeters.HasValue && Model.Product.SquareMeters.Value > 0 ? (Model.Product.Price / Model.Product.SquareMeters.Value).ToString("C") : "N/A")</div>
+                                                        <div class="info"><strong>Market:</strong> @Model.Product.Market.GetDisplayName()</div>
+                                                    }  
                                                     <div class="info"><strong>Square Meters:</strong> @Model.Product.SquareMeters m²</div>
-                                                    <div class="info"><strong>Market:</strong> @Model.Product.Market.GetDisplayName()</div>
                                                     <div class="info"><strong>Building Type:</strong> @Model.Product.Building.GetDisplayName()</div>
                                                     <div class="info"><strong>Last Updated:</strong> @Model.Product.DateAdded.ToString("yyyy-MM-dd")</div>
                                                 </div>
@@ -94,12 +97,13 @@
                                 <div id="map" class="col-12 d-flex justify-content-start" style="height: 500px;"></div>
                             </div>
 
+                            @if (Model.Product.ListingsType.Name == "For Sale"){
                             <div class="row mt-3">
                                 <div class="col-12 d-flex justify-content-end">
                                     <a asp-action="MortgagePayment" asp-controller="Home" asp-route-id="@Model.Product.Id" class="btn btn-info btn-lg" style="height:40px;margin-bottom:10px; padding:5px;">Calculating a mortgage payment</a>
                                 </div>
                             </div>
-
+                            }
                         </div>
                     </div>
                 </div>

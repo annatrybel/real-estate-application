@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
 using WebApp.Models;
 using WebApp.Utility;
@@ -26,7 +27,9 @@ namespace WebApp.Controllers
             }
             
             List<int> prodInBookmark = bookmarkList.Select(i => i.ProductId).ToList();
-            IEnumerable<Product> productList = _context.Product.Where(u => prodInBookmark.Contains(u.Id));
+            IEnumerable<Product> productList = _context.Product
+            .Include(u => u.Images)
+            .Where(u => prodInBookmark.Contains(u.Id));
 
             return View(productList);            
         }

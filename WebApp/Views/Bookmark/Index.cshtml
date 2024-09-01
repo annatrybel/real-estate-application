@@ -36,9 +36,14 @@
                             @foreach(var obj in Model){
                                 <div class="row h-100">
                                     <div class="col-4 col-md-2 text-center py-2">
-                                        @foreach (var image in obj.Images) // Iterujemy przez obrazy produktu
+                                        @if (obj.Images != null && obj.Images.Any())
                                         {
-                                            <img class="rounded me-2" src="~/Images/products/@image.ImageUrl" alt="Product image" style="max-width:150px; max-height:100px;" />
+                                            var firstImage = obj.Images.First();
+                                            <img src="~/Images/products/@firstImage.ImageUrl" style="width: 100%; max-height: 100px; object-fit: cover;" alt="Product image" />
+                                        }
+                                        else
+                                        {
+                                            <p>No image available</p>
                                         }
                                     </div>
                                     <div class="col-8 col-lg-7">
