@@ -212,7 +212,7 @@
                         data: {
                             q: query,
                             maxRows: 5,
-                            username: 'aniutkatrybel' 
+                            username: '' 
                         },
                         success: function (data) {
                             if (data.geonames && data.geonames.length > 0) {
@@ -250,80 +250,3 @@
     </script>
 }
 
-
-<style>
-    #load-more {
-        background-color: #ffffff; 
-        color: #000000;
-        border: 2px solid #000000; 
-        padding: 5px 10px; 
-        border-radius: 0.25rem; 
-        display: inline-flex; 
-        align-items: center; 
-        margin:20px;
-    }
-
-        #load-more i {
-            margin-right: 8px; 
-        }
-
-        #load-more:hover {
-            background-color: #f8f9fa; 
-            color: #000000; 
-            border-color: #000000; 
-        }
-
-
-
-    .pagination {
-        display: flex;
-        justify-content: center;
-        padding: 0;
-        margin: 0;
-        list-style: none;
-    }
-
-        .pagination .page-item {
-            margin: 0 2px;
-        }
-
-        .pagination .page-link {
-            display: block;
-            padding: 8px 16px;
-            color: #343a40;
-            background-color: #ffffff;
-            border: 1px solid #343a40;
-            border-radius: 0.25rem;
-            text-decoration: none;
-        }
-
-            .pagination .page-link:hover {
-                background-color: #f8f9fa; 
-            }
-
-        .pagination .page-item.active .page-link {
-            background-color: #343a40; 
-            color: #ffffff; 
-        }
-
-
-
-    .search-section {
-        background-color: white; 
-        border-radius: 0.25rem;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-        max-width: 600px;
-    }
-
-    .position-relative {
-        position: relative;
-    }
-   
-    .city-filter {
-        padding-left: 2.5rem; 
-    }
-
-        .city-filter::placeholder {
-            padding-left: 2.5rem; 
-        }
-</style>
