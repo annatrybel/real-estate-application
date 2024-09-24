@@ -1,5 +1,5 @@
 Project Description:
-WebApp is a web application that allows users to manage real estate listings. The project was developed using ASP.NET Core MVC and covered the entire lifecycle of web application development – from designing the user interface to implementing business logic and integrating with the database.
+Real Estate Application is a web application that allows users to manage real estate listings. The project was developed using ASP.NET Core MVC and covered the entire lifecycle of web application development – from designing the user interface to implementing business logic and integrating with the database.
 
 Application Functionalities:
     Category Management: Enables administrators to add, edit, and delete real estate categories, which helps in better organizing the listings.
